@@ -1,9 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const adminRoutes = require('./routes/adminRoutes');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
+
+app.use('/api/employees', adminRoutes);
 
 mongoose
   .connect('mongodb+srv://greesh_5:munny123@cluster0.lvfzzc5.mongodb.net/staffminder', {
