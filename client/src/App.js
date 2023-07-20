@@ -1,17 +1,22 @@
-import React, { useState } from "react";
-import Login from "./components/Login";
+
+
+import Reset from "./components/Reset";
 import { ToastContainer } from "react-toastify";
-import LeaveRequests from "./components/employee-components/LeaveRequests";
-import EmployeeDashboard from "./components/employee-components/Dashbaord";
 import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+
+import React, { useState } from "react";
+
+import LeaveRequests from "./components/employee-components/LeaveRequests";
+import EmployeeDashboard from "./components/employee-components/Dashbaord";
+
 
 const App = () => {
   return (
     <Router>
       <ToastContainer />
       <Routes>
-        <Route
+ <Route
           exact
           path="/"
           element={<Login />}
@@ -24,8 +29,10 @@ const App = () => {
                   <EmployeeDashboard  />
                 }
               />
-           </Routes>
+        <Route exact path="/reset" element={<Reset />} />
+      </Routes>
     </Router>
   );
 };
 export default App;
+
