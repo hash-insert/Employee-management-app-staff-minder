@@ -1,5 +1,6 @@
 const Employee = require('../models/Employee');
 const Timesheet = require('../models/Timesheet');
+const Leaverequest = require('../models/leaveRequest');
 const {validateEmployeeId, validateTimesheetData} = require('../validations/timesheetValidations');
 
 exports.getEmployeeProfile = async (req, res, next) => {
@@ -55,6 +56,42 @@ exports.getEmployeeTimesheets = async (req, res, next) => {
         }
         const timesheets = await Timesheet.find({employeeId});
         res.json(timesheets);
+    } catch (error) {
+        next(error);
+    }
+};
+
+exports.submitLeaveRequest = async (req, res, next) => {
+    try {
+        const {
+            employeeId,
+            employeeName,
+            status,
+            fromDate,
+            toDate,
+            leaveType
+        } = req.body;
+
+
+        const employee = await Employee.findById(employeeId);
+        if (! employee) {
+            return res.status(404).json({message: 'Employee not found'});
+        }
+
+
+        const LeaveRequest = new Leaverequest({
+            employeeId,
+            employeeName,
+            status,
+            fromDate,
+            toDate,
+            leaveType
+        });
+
+
+        await LeaveRequest.save();
+
+        res.status(201).json(LeaveRequest);
     } catch (error) {
         next(error);
     }
