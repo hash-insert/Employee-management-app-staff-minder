@@ -1,9 +1,14 @@
 const Employee = require('../models/Employee');
 const Timesheet = require('../models/Timesheet');
+const {validateEmployeeId, validateTimesheetData} = require('../validations/timesheetValidations');
 
 exports.getEmployeeProfile = async (req, res, next) => {
     try {
         const {employeeId} = req.params;
+        const employeeIdError = validateEmployeeId(employeeId);
+        if (employeeIdError) {
+            return res.status(400).json({error: employeeIdError});
+        }
         const employee = await Employee.findById(employeeId);
         if (! employee) {
             return res.status(404).json({message: 'Employee not found'});
@@ -13,9 +18,18 @@ exports.getEmployeeProfile = async (req, res, next) => {
         next(error);
     }
 };
+
 exports.submitTimesheet = async (req, res, next) => {
     try {
         const {employeeId, weekStartDate, hoursWorked, documents} = req.body;
+        const employeeIdError = validateEmployeeId(employeeId);
+        const timesheetDataError = validateTimesheetData(req.body);
+        if (employeeIdError) {
+            return res.status(400).json({error: employeeIdError});
+        }
+        if (timesheetDataError) {
+            return res.status(400).json({error: timesheetDataError});
+        }
         const employee = await Employee.findById(employeeId);
         if (! employee) {
             return res.status(404).json({message: 'Employee not found'});
@@ -27,9 +41,14 @@ exports.submitTimesheet = async (req, res, next) => {
         next(error);
     }
 };
+
 exports.getEmployeeTimesheets = async (req, res, next) => {
     try {
         const {employeeId} = req.params;
+        const employeeIdError = validateEmployeeId(employeeId);
+        if (employeeIdError) {
+            return res.status(400).json({error: employeeIdError});
+        }
         const employee = await Employee.findById(employeeId);
         if (! employee) {
             return res.status(404).json({message: 'Employee not found'});
