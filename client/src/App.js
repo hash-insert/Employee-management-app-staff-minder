@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import React, { useState } from "react";
 import LeaveRequests from "./components/employee-components/LeaveRequests";
 import EmployeeDashboard from "./components/employee-components/Dashbaord";
+import AdminDashboard from "./components/admin-components/Dashboard";
 import Login from "./components/Login";
 
 const App = () => {
@@ -18,6 +19,11 @@ const App = () => {
           exact
           path="/employee-dashboard"
           element={<EmployeeDashboard />}
+        />
+        <Route
+          exact
+          path="/admin-dashboard"
+          element={<AdminDashboard />}
         />
         <Route exact path="/reset" element={<Reset />} />
       </Routes>
