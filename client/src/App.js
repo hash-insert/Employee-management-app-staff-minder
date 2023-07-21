@@ -9,6 +9,7 @@ import AdminDashboard from "./components/admin-components/Dashboard";
 import Employees from "./components/admin-components/Employees";
 import AdminNavbar from "./components/admin-components/Navbar";
 import Login from "./components/Login";
+import Profile from "./components/Profile";
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
       <Routes>
         <Route exact path="/" element={<Login />} />
         <Route exact path="/leave-requests" element={<LeaveRequests />} />
+        <Route exact path="/profile" element={<Profile />} />
         <Route
           exact
           path="/employee-dashboard"
