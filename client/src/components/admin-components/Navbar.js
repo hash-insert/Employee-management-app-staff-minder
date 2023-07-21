@@ -17,6 +17,7 @@ import {
   useMediaQuery,
 } from "@chakra-ui/react";
 import { FaUserCircle, FaBars } from "react-icons/fa";
+import { useLocation } from "react-router-dom";
 
 const customTheme = extendTheme({
   colors: {
@@ -26,7 +27,13 @@ const customTheme = extendTheme({
 
 const Navbar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [isLargerThanMd] = useMediaQuery("(min-width: 768px)"); // Define the breakpoint here
+  const [isLargerThanMd] = useMediaQuery("(min-width: 768px)");
+  const location = useLocation();
+
+  const isCurrentRoute = (path) => {
+    return location.pathname === path;
+  };
+
 
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
@@ -58,20 +65,40 @@ const Navbar = () => {
           </Box>
           {/* Display links for larger screens */}
           {isLargerThanMd ? (
-            <Box display="flex" alignItems="center">
-              <Link href="/leave-requests" p="4" color="white" fontWeight="bold">
-                Leave Requests
-              </Link>
-              <Link href="/timesheet" p="4" color="white" fontWeight="bold">
-                Timesheets
-              </Link>
-              <Link href="/employees" p="4" color="white" fontWeight="bold">
-                Employees
-              </Link>
-              <Link href="/teams" p="4" color="white" fontWeight="bold">
-                Teams
-              </Link>
-            </Box>
+           <Box display="flex" alignItems="center">
+           <Link
+             href="/leave-requests"
+             p="4"
+             color={isCurrentRoute("/leave-requests") ? "blue.300" : "white"}
+             fontWeight="bold"
+           >
+             Leave Requests
+           </Link>
+           <Link
+             href="/timesheet"
+             p="4"
+             color={isCurrentRoute("/timesheet") ? "blue.300" : "white"}
+             fontWeight="bold"
+           >
+             Timesheets
+           </Link>
+           <Link
+             href="/employees"
+             p="4"
+             color={isCurrentRoute("/employees") ? "blue.300" : "white"}
+             fontWeight="bold"
+           >
+             Employees
+           </Link>
+           <Link
+             href="/teams"
+             p="4"
+             color={isCurrentRoute("/teams") ? "blue.300" : "white"}
+             fontWeight="bold"
+           >
+             Teams
+           </Link>
+         </Box>
           ) : (
             // Display hamburger icon for small screens
             <IconButton

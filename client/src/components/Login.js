@@ -25,7 +25,7 @@ const customTheme = extendTheme({
     brandLightBlue: "#45CFDD",
   },
 });
-const Login = ({ setLoggedIn }) => {
+const Login = ({ onLogin }) => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -58,14 +58,10 @@ const Login = ({ setLoggedIn }) => {
       setPasswordError(true);
       return;
     }
-    setEmail("");
-    setPassword("");
-    setSubmitButtonDisabled(true);
     signInWithEmailAndPassword(auth, email, password)
       .then((res) => {
         toast.success("Logged In successfully");
-        setSubmitButtonDisabled(false);
-        // setLoggedIn(true);
+        onLogin(); // Call the onLogin prop to inform the parent component about successful login
         navigate("/admin-dashboard");
         console.log("Admin login successfully");
       })
@@ -74,14 +70,13 @@ const Login = ({ setLoggedIn }) => {
         toast.error(
           "Login failed. Please check your credentials and try again."
         );
-        setSubmitButtonDisabled(false);
       });
   };
   return (
     <ChakraProvider theme={customTheme}>
       <Center bgGradient="linear(to-b, brandBlue, brandLightBlue)" h="100vh">
         <Box
-          w={["full", "md"]}
+          w={["full", "md"]} 
           p={[8, 10]}
           mt={[20, "10vh"]}
           mx="auto"

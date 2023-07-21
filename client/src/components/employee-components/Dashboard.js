@@ -4,7 +4,6 @@ import {
   Center,
   extendTheme,
   VStack,
-  Link,
   Text,
   Box,
   Image,

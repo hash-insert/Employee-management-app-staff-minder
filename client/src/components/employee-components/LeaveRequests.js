@@ -61,7 +61,7 @@ const LeaveRequests = () => {
   };
   
   return (
-    <Box>
+    <Box mt={10}>
       <LeaveCalendar
         onDayClick={handleDateSelect}
         value={selectedDates}

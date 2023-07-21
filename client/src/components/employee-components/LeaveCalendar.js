@@ -47,32 +47,30 @@ function LeaveCalendar({ events, onDayClick }) {
   };
 
   return (
-    <div>
-      <FullCalendar
-        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-        initialView={"dayGridMonth"}
-        headerToolbar={{
-          start: "today prev,next",
-          center: "title",
-          end: "dayGridMonth,timeGridWeek,timeGridDay",
-        }}
-        height={"90vh"}
-        events={calendarEvents}
-        eventDidMount={(info) => {
-          return new bootstrap.Popover(info.el, {
-            title: info.event.title,
-            placement: "auto",
-            trigger: "hover",
-            customClass: "popoverStyle",
-            content: renderEventDetails(info.event),
-            html: true,
-          });
-        }}
-        dateClick={(info) => {
-          onDayClick(new Date(info.dateStr));
-        }}
-      />
-    </div>
+    <FullCalendar
+      plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+      initialView={"dayGridMonth"}
+      headerToolbar={{
+        start: "today prev,next",
+        center: "title",
+        end: "dayGridMonth,timeGridWeek,timeGridDay",
+      }}
+      height={"90vh"}
+      events={calendarEvents}
+      eventDidMount={(info) => {
+        return new bootstrap.Popover(info.el, {
+          title: info.event.title,
+          placement: "auto",
+          trigger: "hover",
+          customClass: "popoverStyle",
+          content: renderEventDetails(info.event),
+          html: true,
+        });
+      }}
+      dateClick={(info) => {
+        onDayClick(new Date(info.dateStr));
+      }}
+    />
   );
 }
 export default LeaveCalendar;
