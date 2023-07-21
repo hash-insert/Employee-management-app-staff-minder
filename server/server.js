@@ -1,16 +1,19 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 const adminRoutes = require('./routes/adminRoutes');
 const employeeRoutes = require('./routes/employeeRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 8000;
+require('dotenv').config();
 
 app.use(express.json());
+app.use(cors());
 app.use('/api/employees', adminRoutes);
 app.use('/api/employee', employeeRoutes);
 
-mongoose.connect('mongodb+srv://greesh_5:munny123@cluster0.lvfzzc5.mongodb.net/staffminder', {
+mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 }).then(() => {

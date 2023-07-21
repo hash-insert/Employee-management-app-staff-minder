@@ -65,7 +65,7 @@ const Login = ({ setLoggedIn }) => {
       .then((res) => {
         toast.success("Logged In successfully");
         setSubmitButtonDisabled(false);
-        setLoggedIn(true);
+        // setLoggedIn(true);
         navigate("/admin-dashboard");
         console.log("Admin login successfully");
       })
