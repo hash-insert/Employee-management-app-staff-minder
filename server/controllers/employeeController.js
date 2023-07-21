@@ -95,3 +95,20 @@ exports.submitLeaveRequest = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.resetPassword = async (req, res, next) => {
+    try {
+        const { email, newPassword } = req.body;
+        const employee = await Employee.findOne({ email });
+  
+        if (!employee) {
+            return res.status(404).json({ error: 'Employee not found.' });
+        }
+        employee.password = newPassword;
+        await employee.save();
+  
+        res.status(200).json({ message: 'Password reset successful.' });
+    } catch (error) {
+        next(error);
+    }
+  };
