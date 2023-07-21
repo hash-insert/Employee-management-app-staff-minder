@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import {
   Box,
   Button,
@@ -24,7 +25,7 @@ const LongLeaveForm = ({ onClose, onSubmit }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validation
@@ -43,8 +44,31 @@ const LongLeaveForm = ({ onClose, onSubmit }) => {
       setErrors(newErrors);
     } else {
       setIsSubmitting(true);
-      onSubmit(formData);
-      onClose();
+
+      try {
+        // Make a POST request to the backend API
+        const response = await axios.post(
+          "http://localhost:8000/api/employee/leaverequest",
+          formData
+        );
+
+        // Assuming the backend responds with the saved data, you can access it from the response object
+        console.log("Leave request saved:", response.data);
+
+        // Reset the form and close the modal
+        setFormData({
+          startDate: "",
+          endDate: "",
+          reason: "",
+        });
+        setErrors({});
+        setIsSubmitting(false);
+        onClose();
+      } catch (error) {
+        // Handle any errors that occurred during the API request
+        console.error("Error while saving leave request:", error);
+        setIsSubmitting(false);
+      }
     }
   };
 
