@@ -4,17 +4,17 @@ import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navbar from "./components/admin-components/Navbar"
 import Login from "./components/Login";
-import LeaveRequests from "./components/employee-components/LeaveRequests";
+import AdminLeaveRequests from "./components/admin-components/AdminLeaveRequests";
 import EmployeeDashboard from "./components/employee-components/Dashboard";
 import AdminDashboard from "./components/admin-components/Dashboard";
 import Employees from "./components/admin-components/Employees";
 import Profile from "./components/Profile";
 import Reset from "./components/Reset";
-import { auth } from "./firebase"; // Import your firebase instance
+import { auth } from "./firebase";
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true);
 
   // Listen for authentication state changes
   useEffect(() => {
@@ -24,24 +24,19 @@ const App = () => {
       } else {
         setLoggedIn(false);
       }
-      setLoading(false); // Set loading to false when the state is determined
+      setLoading(false);
     });
-
-    // Unsubscribe from the listener when the component unmounts
     return () => unsubscribe();
   }, []);
 
   if (loading) {
-    // You can display a loading spinner here if needed
     return <div>Loading...</div>;
   }
 
-  // Function to handle successful login and set loggedIn to true
   const handleLogin = () => {
     setLoggedIn(true);
   };
 
-  // Function to handle successful logout and set loggedIn to false
   const handleLogout = () => {
     setLoggedIn(false);
   };
@@ -49,13 +44,11 @@ const App = () => {
   return (
     <Router>
       <ToastContainer />
-      {loggedIn && <Navbar onLogout={handleLogout} />} {/* Include the Navbar component if logged in */}
+      {loggedIn && <Navbar onLogout={handleLogout} />}
       <Routes>
-        {/* If logged in, redirect to the appropriate dashboard */}
         {loggedIn && <Route path="/" element={<AdminDashboard />} />}
-        {/* If not logged in, show the login page */}
         {!loggedIn && <Route path="/" element={<Login onLogin={handleLogin} />} />}
-        <Route exact path="/leave-requests" element={<LeaveRequests />} />
+        <Route exact path="/leave-requests" element={<AdminLeaveRequests />} />
         <Route exact path="/employee-dashboard" element={<EmployeeDashboard />} />
         <Route exact path="/admin-dashboard" element={<AdminDashboard />} />
         <Route exact path="/employees" element={<Employees />} />
