@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import LeaveRequests from "./components/employee-components/LeaveRequests";
 import EmployeeDashboard from "./components/employee-components/Dashbaord";
 import AdminDashboard from "./components/admin-components/Dashboard";
+import Employees from "./components/admin-components/Employees";
 import Login from "./components/Login";
 
 const App = () => {
@@ -24,6 +25,11 @@ const App = () => {
           exact
           path="/admin-dashboard"
           element={<AdminDashboard />}
+        />
+        <Route
+          exact
+          path="/employees"
+          element={<Employees />}
         />
         <Route exact path="/reset" element={<Reset />} />
       </Routes>
