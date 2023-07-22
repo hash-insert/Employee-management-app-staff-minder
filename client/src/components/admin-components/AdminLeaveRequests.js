@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import AdminNavbar from "./AdminNavbar";
 import {
   Box,
   Heading,
@@ -97,6 +98,7 @@ const AdminLeaveRequests = () => {
 
   return (
     <ChakraProvider theme={customTheme}>
+      <AdminNavbar />
       <Center bgGradient="linear(to-b, brandBlue, brandLightBlue)" h="100vh">
         <Box w="100%" maxW="800px" p={4}>
           <Heading size="lg" mb={4} textAlign="center" color="white">

@@ -9,10 +9,11 @@ import {
   Box,
   Image,
   SimpleGrid,
-  Flex
+  Flex,
 } from "@chakra-ui/react";
 import image1 from "../../assets/image1.jpg";
 import image3 from "../../assets/image3.jpg";
+import AdminNavbar from "./AdminNavbar";
 
 const customTheme = extendTheme({
   colors: {
@@ -21,9 +22,10 @@ const customTheme = extendTheme({
   },
 });
 
-const Dashboard = () => {
+const AdminDashboard = () => {
   return (
     <ChakraProvider theme={customTheme}>
+      <AdminNavbar />
       <Center bgGradient="linear(to-b, brandBlue, brandLightBlue)" h="100vh">
         <VStack spacing={6} align="center">
           <Box
@@ -78,4 +80,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default AdminDashboard;

@@ -17,6 +17,7 @@ import avatar from "../../assets/profile.png";
 import { FiSearch, FiPlus } from "react-icons/fi";
 import AddEmployee from "./AddEmployee";
 import { format } from 'date-fns';
+import AdminNavbar from "./AdminNavbar";
 
 const customTheme = extendTheme({
   colors: {
@@ -75,6 +76,7 @@ const Employees = () => {
 
   return (
     <ChakraProvider theme={customTheme}>
+      <AdminNavbar />
       <Center
         bgGradient="linear(to-b, brandBlue, brandLightBlue)"
         minH="100vh"

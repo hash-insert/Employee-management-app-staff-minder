@@ -1,6 +1,6 @@
 import React, { useState } from "react";
+import axios from "axios";
 import {
-  Box,
   Heading,
   FormControl,
   FormLabel,
@@ -18,10 +18,11 @@ import {
   InputRightElement,
 } from "@chakra-ui/react";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth } from "../../firebase";
+import { auth, firestore } from "../../firebase";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { collection, doc, setDoc } from "firebase/firestore";
 
 const AddEmployee = ({ isOpen, onClose }) => {
   const [dateOfJoining, setDateOfJoining] = useState("");
@@ -32,6 +33,16 @@ const AddEmployee = ({ isOpen, onClose }) => {
   const [role, setRole] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState("");
+
+  const handlePhoneNumberChange = (event) => {
+    setPhoneNumber(event.target.value);
+  };
+
+  const handleDateOfBirthChange = (event) => {
+    setDateOfBirth(event.target.value);
+  };
 
   const handleDateOfJoiningChange = (event) => {
     setDateOfJoining(event.target.value);
@@ -61,7 +72,7 @@ const AddEmployee = ({ isOpen, onClose }) => {
     setShowPassword(!showPassword);
   };
 
-  const handleAddEmployee = () => {
+  const handleAddEmployee = async () => {
     // Perform form validation
     if (
       !name ||
@@ -82,35 +93,60 @@ const AddEmployee = ({ isOpen, onClose }) => {
     setEmail("");
     setPassword("");
     setRole("");
+    setPhoneNumber("");
+    setDateOfBirth("");
     setSubmitButtonDisabled(true);
 
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((res) => {
-        const user = res.user;
-        updateProfile(user, {
-          displayName: name,
-        })
-          .then(() => {
-            console.log("Profile updated successfully.");
-            toast.success("Employee added successfully.");
-            setSubmitButtonDisabled(false);
-            onClose();
-          })
-          .catch((error) => {
-            console.log("Error updating profile:", error);
-            toast.error("Error adding employee. Please try again.");
-            setSubmitButtonDisabled(false);
-          });
-      })
-      .catch((error) => {
-        console.log("Error creating user:", error);
-        if (error.code === "auth/email-already-in-use") {
-          toast.error("Email already exists. Please use a different email.");
-        } else {
-          toast.error("Error adding employee. Please try again.");
-        }
-        setSubmitButtonDisabled(false);
+    let user;
+    try {
+      const res = await createUserWithEmailAndPassword(auth, email, password);
+      user = res.user;
+
+      await updateProfile(user, {
+        displayName: name,
       });
+
+      // Save the employee data to Firestore
+      const employeeRef = doc(firestore, "employees", user.uid);
+      await setDoc(employeeRef, {
+        name,
+        email,
+        team: selectedTeam,
+        role,
+        phoneNumber,
+        dateOfBirth,
+        dateOfJoining,
+        password,
+      });
+
+      // Make a POST request to the backend
+      const employeeData = {
+        name,
+        email,
+        team: selectedTeam,
+        role,
+        phoneNumber,
+        dateOfBirth,
+        dateOfJoining,
+        password,
+      };
+
+      // Use Axios to post data to the backend
+      await axios.post("http://localhost:8000/api/employees", employeeData);
+
+      console.log("Employee data saved to Firestore and backend.");
+      toast.success("Employee added successfully.");
+      setSubmitButtonDisabled(false);
+      onClose();
+    } catch (error) {
+      console.error("Error adding employee:", error);
+      if (user && error.code === "auth/email-already-in-use") {
+        await user.delete();
+      }
+
+      toast.error("Error adding employee. Please try again.");
+      setSubmitButtonDisabled(false);
+    }
   };
 
   return (
@@ -142,6 +178,60 @@ const AddEmployee = ({ isOpen, onClose }) => {
             />
           </FormControl>
           <FormControl mb="4">
+            <FormLabel>Team</FormLabel>
+            <Select
+              placeholder="Select a team"
+              value={selectedTeam}
+              onChange={handleTeamChange}
+              borderColor="black"
+            >
+              <option value="">Select a team</option>
+              <option value="devops">Devops</option>
+              <option value="frontend">Frontend</option>
+              <option value="backend">Backend</option>
+              <option value="testing">Testing</option>
+            </Select>
+          </FormControl>
+          <FormControl mb="4">
+            <FormLabel>Role</FormLabel>
+            <Select
+              value={role}
+              onChange={handleRoleChange}
+              borderColor="black"
+            >
+              <option value="">Select a role</option>
+              <option value="admin">Admin</option>
+              <option value="employee">Employee</option>
+            </Select>
+          </FormControl>
+          <FormControl mb="4">
+            <FormLabel>Phone Number</FormLabel>
+            <Input
+              type="tel"
+              value={phoneNumber}
+              onChange={handlePhoneNumberChange}
+              borderColor="black"
+            />
+          </FormControl>
+          <FormControl mb="4">
+            <FormLabel>Date of Birth</FormLabel>
+            <Input
+              type="date"
+              value={dateOfBirth}
+              onChange={handleDateOfBirthChange}
+              borderColor="black"
+            />
+          </FormControl>
+          <FormControl mb="4">
+            <FormLabel>Date of Joining</FormLabel>
+            <Input
+              type="date"
+              value={dateOfJoining}
+              onChange={handleDateOfJoiningChange}
+              borderColor="black"
+            />
+          </FormControl>
+          <FormControl mb="4">
             <FormLabel>Password</FormLabel>
             <InputGroup>
               <Input
@@ -159,42 +249,6 @@ const AddEmployee = ({ isOpen, onClose }) => {
                 />
               </InputRightElement>
             </InputGroup>
-          </FormControl>
-          <FormControl mb="4">
-            <FormLabel>Role</FormLabel>
-            <Select
-              value={role}
-              onChange={handleRoleChange}
-              borderColor="black"
-            >
-              <option value="">Select a role</option>
-              <option value="admin">Admin</option>
-              <option value="user">User</option>
-            </Select>
-          </FormControl>
-          <FormControl mb="4">
-            <FormLabel>Date of Joining</FormLabel>
-            <Input
-              type="date"
-              value={dateOfJoining}
-              onChange={handleDateOfJoiningChange}
-              borderColor="black"
-            />
-          </FormControl>
-          <FormControl mb="4">
-            <FormLabel>Team</FormLabel>
-            <Select
-              placeholder="Select a team"
-              value={selectedTeam}
-              onChange={handleTeamChange}
-              borderColor="black"
-            >
-              <option value="">Select a team</option>
-              <option value="devops">Devops</option>
-              <option value="frontend">Frontend</option>
-              <option value="backend">Backend</option>
-              <option value="testing">Testing</option>
-            </Select>
           </FormControl>
         </ModalBody>
         <ModalFooter>

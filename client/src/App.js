@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { ToastContainer } from "react-toastify";
-import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Navbar from "./components/admin-components/Navbar"
 import Login from "./components/Login";
 import AdminLeaveRequests from "./components/admin-components/AdminLeaveRequests";
-import EmployeeDashboard from "./components/employee-components/Dashboard";
-import AdminDashboard from "./components/admin-components/Dashboard";
+import EmployeeLeaveRequests from "./components/employee-components/EmployeeLeaveRequests";
+import AdminDashboard from "./components/admin-components/AdminDashboard";
+import EmployeeDashboard from "./components/employee-components/EmployeeDashboard";
 import Employees from "./components/admin-components/Employees";
 import Profile from "./components/Profile";
 import Reset from "./components/Reset";
@@ -33,29 +32,32 @@ const App = () => {
     return <div>Loading...</div>;
   }
 
-  const handleLogin = () => {
-    setLoggedIn(true);
-  };
-
-  const handleLogout = () => {
-    setLoggedIn(false);
-  };
-
   return (
-    <Router>
-      <ToastContainer />
-      {loggedIn && <Navbar onLogout={handleLogout} />}
-      <Routes>
-        {loggedIn && <Route path="/" element={<AdminDashboard />} />}
-        {!loggedIn && <Route path="/" element={<Login onLogin={handleLogin} />} />}
-        <Route exact path="/leave-requests" element={<AdminLeaveRequests />} />
-        <Route exact path="/employee-dashboard" element={<EmployeeDashboard />} />
-        <Route exact path="/admin-dashboard" element={<AdminDashboard />} />
-        <Route exact path="/employees" element={<Employees />} />
-        <Route exact path="/reset" element={<Reset />} />
-        <Route exact path="/profile" element={<Profile />} />
-      </Routes>
-    </Router>
+      <Router>
+        <ToastContainer />
+        <Routes>
+          {loggedIn ? (
+            <>
+              <Route path="/" element={<AdminLeaveRequests />} />
+              <Route path="/leave-requests" element={<AdminLeaveRequests />} />
+              <Route path="/admin-dashboard" element={<AdminDashboard />} />
+              <Route
+                path="/employee-dashboard"
+                element={<EmployeeDashboard />}
+              />
+              <Route path="/employees" element={<Employees />} />
+              <Route path="/reset" element={<Reset />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route
+                path="/employee-leave-requests"
+                element={<EmployeeLeaveRequests />}
+              />
+            </>
+          ) : (
+            <Route path="/" element={<Login onLogin={() => setLoggedIn(true)} />} />
+          )}
+        </Routes>
+      </Router>
   );
 };
 

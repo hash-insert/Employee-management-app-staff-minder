@@ -4,23 +4,27 @@ import {
   Center,
   extendTheme,
   VStack,
+  Link,
   Text,
   Box,
   Image,
   SimpleGrid,
+  Flex
 } from "@chakra-ui/react";
 import image1 from "../../assets/image1.jpg";
-import image2 from "../../assets/image2.jpg";
 import image3 from "../../assets/image3.jpg";
+import EmployeeNavbar from "./EmployeeNavbar";
 const customTheme = extendTheme({
   colors: {
     brandBlue: "#0A6EBD",
-    brandLightBlue: "#45CFDD",
+    brandLightBlue: "#45cfdd",
   },
 });
-const Dashboard = () => {
+
+const EmployeeDashboard = () => {
   return (
     <ChakraProvider theme={customTheme}>
+      <EmployeeNavbar />
       <Center bgGradient="linear(to-b, brandBlue, brandLightBlue)" h="100vh">
         <VStack spacing={6} align="center">
           <Box
@@ -44,6 +48,7 @@ const Dashboard = () => {
               <Image src={image1} alt="Image 1" mt={4} borderRadius="md" />
             </Center>{" "}
           </Box>
+          // Inside your component or JSX code
           <Box
             p={4}
             bg="transparent"
@@ -55,20 +60,23 @@ const Dashboard = () => {
             <Text fontSize="xl" fontWeight="bold" mb={2}>
               Contact Us
             </Text>
-            <Text>
-              If you have any questions or need assistance, please don't
-              hesitate to reach out to us. You can contact our support team at
-              support@staffminder.com or call us at +1 123-456-7890.
-            </Text>
-            <SimpleGrid columns={3} spacing={2} mt={4}>
-              <Image src={image2} alt="Image 2" borderRadius="md" />
+            <Flex
+              flexDirection={{ base: "column", md: "row" }}
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Text mr={{ base: 0, md: 4 }}>
+                If you have any questions or need assistance, please don't
+                hesitate to reach out to us. You can contact our support team at
+                support@staffminder.com or call us at +1 123-456-7890.
+              </Text>
               <Image src={image3} alt="Image 3" borderRadius="md" />
-              <Image src={image1} alt="Image 1" borderRadius="md" />
-            </SimpleGrid>
+            </Flex>
           </Box>
         </VStack>
       </Center>
     </ChakraProvider>
   );
 };
-export default Dashboard;
+
+export default EmployeeDashboard;

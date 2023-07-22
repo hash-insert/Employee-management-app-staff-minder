@@ -25,7 +25,7 @@ const customTheme = extendTheme({
   },
 });
 
-const Navbar = () => {
+const AdminNavbar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isLargerThanMd] = useMediaQuery("(min-width: 768px)");
   const location = useLocation();
@@ -139,4 +139,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default AdminNavbar;

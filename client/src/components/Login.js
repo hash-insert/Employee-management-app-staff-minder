@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { collection, doc, getDoc } from "firebase/firestore";
 import {
   Box,
   VStack,
@@ -16,15 +17,17 @@ import {
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase";
+import { auth, firestore } from "../firebase";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 const customTheme = extendTheme({
   colors: {
     brandBlue: "#0A6EBD",
     brandLightBlue: "#45CFDD",
   },
 });
+
 const Login = ({ onLogin }) => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -33,18 +36,22 @@ const Login = ({ onLogin }) => {
   const [passwordError, setPasswordError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
+
   const handleEmailInputChange = (e) => {
     setEmail(e.target.value);
     setEmailError(false);
   };
+
   const handlePasswordInputChange = (e) => {
     setPassword(e.target.value);
     setPasswordError(false);
   };
+
   const handleTogglePassword = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Email validation using regex
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -58,25 +65,51 @@ const Login = ({ onLogin }) => {
       setPasswordError(true);
       return;
     }
-    signInWithEmailAndPassword(auth, email, password)
-      .then((res) => {
-        toast.success("Logged In successfully");
+  
+    try {
+      console.log("Attempting to log in...");
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+  
+      // Get the user's role from Firestore
+      const employeeRef = doc(collection(firestore, "employees"), user.uid);
+      const employeeDocSnap = await getDoc(employeeRef);
+  
+      if (employeeDocSnap.exists()) {
+        console.log("User data found in Firestore.");
+        const employeeData = employeeDocSnap.data();
+        const userRole = employeeData.role; // Assuming the role is stored as "role" in the Firestore document
         onLogin(); // Call the onLogin prop to inform the parent component about successful login
-        navigate("/admin-dashboard");
-        console.log("Admin login successfully");
-      })
-      .catch((error) => {
-        console.log("Error creating user:", error);
-        toast.error(
-          "Login failed. Please check your credentials and try again."
-        );
-      });
+  
+        if (userRole === "admin") {
+          navigate("/admin-dashboard");
+          toast.success("Admin Logged In successfully");
+          console.log("Admin login successfully");
+          onLogin("admin");
+        } else if (userRole === "employee") {
+          navigate("/employee-dashboard");
+          toast.success("Employee Logged In successfully");
+          console.log("Employee login successfully");
+          onLogin("employee");
+        } else {
+          console.log("Unknown role:", userRole);
+          // Handle other roles or redirect to a default dashboard if needed
+        }
+      } else {
+        console.log("User data not found in Firestore.");
+        toast.error("Login failed. User data not found.");
+      }
+    } catch (error) {
+      console.log("Error creating user:", error);
+      toast.error("Login failed. Please check your credentials and try again.");
+    }
   };
+
   return (
     <ChakraProvider theme={customTheme}>
       <Center bgGradient="linear(to-b, brandBlue, brandLightBlue)" h="100vh">
         <Box
-          w={["full", "md"]} 
+          w={["full", "md"]}
           p={[8, 10]}
           mt={[20, "10vh"]}
           mx="auto"
@@ -164,4 +197,5 @@ const Login = ({ onLogin }) => {
     </ChakraProvider>
   );
 };
+
 export default Login;
