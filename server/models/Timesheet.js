@@ -6,25 +6,25 @@ const timesheetSchema = new mongoose.Schema({
         ref: 'Employee',
         required: true
     },
-    weekStartDate: {
-        type: Date,
+    employeeName:{
+       type:String,
+       required:true
+    },
+    status: {
+        type: String,
+        enum: [
+            'pending', 'approved', 'rejected'
+        ],
         required: true
     },
-    daysWorked: {
-        type: Object,
-        required: true
-    },
-    hoursWorked: {
-        type: Object,
-        required: true
-    },
-    documents: {
-        type: [String]
-    },
-    approved: {
-        type: Boolean,
-        default: false
-    }
+    year: { type: Number, required: true },
+    month: { type: Number, required: true },
+    week: { type: String, required: true },
+    date: { type: Date, required: true },
+    fromTime:{type: String,required:true},
+    toTime:{type: String,required:true},
+    documents: { type: [String],required:true }, 
+    notes: { type: String,required:true}
 });
 
 module.exports = mongoose.model('Timesheet', timesheetSchema);
