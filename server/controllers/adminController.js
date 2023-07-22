@@ -1,6 +1,7 @@
 const Employee = require('../models/Employee');
 const Timesheet = require('../models/Timesheet');
 const LeaveRequest = require('../models/leaveRequest');
+const shortLeaveRequest = require('../models/shortLeaveRequest');
 
 const {validateEmployeeData, validateEmployeeId, validateTimesheetId} = require('../validations/employeeValidations');
 
@@ -131,6 +132,30 @@ exports.approveLeaverequest = async (req, res, next) => {
         }
 
         res.json(leaverequest);
+    } catch (error) {
+        next(error);
+    }
+};
+
+exports.getAllshortLeaverequest = async (req, res, next) => {
+    try {
+        const shortleaverequest = await shortLeaveRequest.find();
+        res.json(shortleaverequest);
+    } catch (error) {
+        next(error);
+    }
+};
+
+exports.approveshortLeaverequest = async (req, res, next) => {
+    try {
+        const {shortleaverequestId} = req.params;
+        const shortleaverequest = await shortLeaveRequest.findByIdAndUpdate(shortleaverequestId, {
+            status: "approved"
+        }, {new: true});
+        if (! shortleaverequest) {
+            return res.status(404).json({message: 'shortleaverequest not found'});
+        }
+        res.json(shortleaverequest);
     } catch (error) {
         next(error);
     }

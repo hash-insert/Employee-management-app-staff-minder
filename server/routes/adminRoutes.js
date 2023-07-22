@@ -10,4 +10,7 @@ router.put('/timesheets/:timesheetId/approve', adminController.approveTimesheet)
 router.get('/timesheets', adminController.getAllTimesheets);
 router.get('/leaverequest', adminController.getAllLeaverequest);
 router.put('/leaverequest/:leaverequestId', adminController.approveLeaverequest);
+router.get('/shortleaverequest',adminController.getAllshortLeaverequest);
+router.put('/shortleaverequest/:shortleaverequestId',adminController.approveshortLeaverequest);
+
 module.exports = router;
