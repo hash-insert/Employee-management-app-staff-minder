@@ -84,23 +84,23 @@ exports.getAllEmployees = async (req, res, next) => {
     }
 };
 
-exports.approveTimesheet = async (req, res, next) => {
-    try {
-        const {timesheetId} = req.params;
-        validateTimesheetId(req, res, () => {
-            Timesheet.findByIdAndUpdate(timesheetId, {
-                approved: true
-            }, {new: true}).then(timesheet => {
-                if (!timesheet) {
-                    return res.status(404).json({message: 'Timesheet not found'});
-                }
-                res.json(timesheet);
-            }).catch(next);
-        });
-    } catch (error) {
-        next(error);
-    }
-};
+// exports.approveTimesheet = async (req, res, next) => {
+//     try {
+//         const {timesheetId} = req.params;
+//         validateTimesheetId(req, res, () => {
+//             Timesheet.findByIdAndUpdate(timesheetId, {
+//                 approved: true
+//             }, {new: true}).then(timesheet => {
+//                 if (!timesheet) {
+//                     return res.status(404).json({message: 'Timesheet not found'});
+//                 }
+//                 res.json(timesheet);
+//             }).catch(next);
+//         });
+//     } catch (error) {
+//         next(error);
+//     }
+// };
 
 exports.getAllTimesheets = async (req, res, next) => {
     try {
@@ -137,6 +137,24 @@ exports.approveLeaverequest = async (req, res, next) => {
     }
 };
 
+exports.rejectLeaveRequest = async (req, res, next) => {
+    try {
+        const { leaverequestId } = req.params;
+
+        const leaverequest = await LeaveRequest.findByIdAndUpdate(leaverequestId, {
+            status: "rejected"
+        }, { new: true });
+
+        if (!leaverequest) {
+            return res.status(404).json({ message: 'Leave request not found' });
+        }
+
+        res.json(leaverequest);
+    } catch (error) {
+        next(error);
+    }
+};
+
 exports.getAllshortLeaverequest = async (req, res, next) => {
     try {
         const shortleaverequest = await shortLeaveRequest.find();
@@ -156,6 +174,56 @@ exports.approveshortLeaverequest = async (req, res, next) => {
             return res.status(404).json({message: 'shortleaverequest not found'});
         }
         res.json(shortleaverequest);
+    } catch (error) {
+        next(error);
+    }
+};
+
+exports.rejectshortLeaverequest = async (req, res, next) => {
+    try {
+        const { shortleaverequestId } = req.params;
+        const shortLeaverequest = await shortLeaveRequest.findByIdAndUpdate(shortleaverequestId, {
+            status: "rejected"
+        }, { new: true });
+        
+        if (!shortLeaverequest) {
+            return res.status(404).json({ message: 'shortLeaverequest not found' });
+        }
+
+        res.json(shortLeaverequest);
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+exports.approveTimesheet = async (req, res, next) => {
+    try {
+        const {timesheetId} = req.params;
+        const timesheet= await Timesheet.findByIdAndUpdate(timesheetId, {
+            status: "approved"
+        }, {new: true});
+        if (! timesheet) {
+            return res.status(404).json({message: 'timesheet not found'});
+        }
+        res.json(timesheet);
+    } catch (error) {
+        next(error);
+    }
+};
+
+exports.rejectTimesheet = async (req, res, next) => {
+    try {
+        const { timesheetId } = req.params;
+        const timesheet = await Timesheet.findByIdAndUpdate(timesheetId, {
+            status: "rejected"
+        }, { new: true });
+        
+        if (!timesheet) {
+            return res.status(404).json({ message: 'Timesheet not found' });
+        }
+
+        res.json(timesheet);
     } catch (error) {
         next(error);
     }
