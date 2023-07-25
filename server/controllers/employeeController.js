@@ -20,7 +20,6 @@ exports.getEmployeeProfile = async (req, res, next) => {
         next(error);
     }
 };
-
 exports.submitTimesheet = async (req, res, next) => {
     try {
         const { employeeId,employeeName, year, month, week, date,status, fromTime, toTime, documents, notes } = req.body;
@@ -191,6 +190,21 @@ exports.getEmployeeTimesheetsByDate = async (req, res, next) => {
         }
         const timesheets = await Timesheet.find({ employeeId, year, month, week, date });
         res.json(timesheets);
+    } catch (error) {
+        next(error);
+    }
+};
+
+exports.getEachLeaveRequests = async (req, res, next) => {
+    try {
+        const employeeId = req.params.employeeId; 
+        const leaveRequests = await Employee.findById(employeeId);
+        
+        if (!leaveRequests.length) {
+            return res.status(404).json({ message: 'No leave requests found for this employee.' });
+        }
+        
+        res.json(leaveRequests);
     } catch (error) {
         next(error);
     }
