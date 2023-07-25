@@ -198,12 +198,23 @@ exports.getEmployeeTimesheetsByDate = async (req, res, next) => {
 exports.getEachLeaveRequests = async (req, res, next) => {
     try {
         const employeeId = req.params.employeeId; 
-        const leaveRequests = await Employee.findById(employeeId);
-        
-        if (!leaveRequests.length) {
+        const leaveRequests = await Leaverequest.find({ employeeId: employeeId });
+        if (!leaveRequests || leaveRequests.length === 0) {
             return res.status(404).json({ message: 'No leave requests found for this employee.' });
         }
-        
+        res.json(leaveRequests);
+    } catch (error) {
+        next(error);
+    }
+};
+
+exports.getEachshortLeaveRequests = async (req, res, next) => {
+    try {
+        const employeeId = req.params.employeeId; 
+        const leaveRequests = await shortLeaveRequest.find({ employeeId: employeeId });
+        if (!leaveRequests || leaveRequests.length === 0) {
+            return res.status(404).json({ message: 'No leave requests found for this employee.' });
+        }
         res.json(leaveRequests);
     } catch (error) {
         next(error);
