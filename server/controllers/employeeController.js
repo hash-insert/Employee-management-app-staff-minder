@@ -228,3 +228,33 @@ exports.getEachshortLeaveRequests = async (req, res, next) => {
         next(error);
     }
 };
+
+exports.editEmployee = async (req, res, next) => {
+    try {
+        const {employeeId} =req.params;
+        const { name, email, phoneNumber, password,picture} = req.body;
+        const employee = await Employee.findById(employeeId);
+        if (!employee) {
+            return res.status(404).json({ error: 'Employee not found.' });
+        } 
+        if (name) {
+            employee.name = name;
+        }
+        if (email) {
+            employee.email = email;
+        }
+        if (phoneNumber) {
+            employee.phoneNumber = phoneNumber;
+        }
+        if (password) {
+            employee.password = password;
+        }
+        if (picture) {
+            employee.picture = picture;
+        }
+        await employee.save();
+        res.status(200).json({ message: 'Employee information updated successfully.' });
+    } catch (error) {
+        next(error);
+    }
+};
