@@ -23,7 +23,7 @@ const shortleaveRequestSchema = new mongoose.Schema({
     default:'short',
     required: true,
   },
-  Date: {
+  date: {
     type: Date,
     required: true,
   },
