@@ -38,7 +38,7 @@ const shortleaveRequestSchema = new mongoose.Schema({
     required: function () {
       return this.leaveType === 'short'; 
   }},
-  leaveReason: {
+  reason: {
     type: String,
     required: true,
   },

@@ -26,7 +26,7 @@ const leaveRequestSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
-  leaveReason: {
+  reason: {
     type: String,
     required: true,
   },

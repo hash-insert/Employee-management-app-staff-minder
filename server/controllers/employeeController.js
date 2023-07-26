@@ -60,10 +60,12 @@ exports.submitLeaveRequest = async (req, res, next) => {
         const {
             employeeId,
             employeeName,
+            email,
             status,
             fromDate,
             toDate,
-            leaveType
+            leaveType,
+            reason
         } = req.body;
 
         const employee = await Employee.findById(employeeId);
@@ -74,10 +76,12 @@ exports.submitLeaveRequest = async (req, res, next) => {
         const LeaveRequest = new Leaverequest({
             employeeId,
             employeeName,
+            email,
             status,
             fromDate,
             toDate,
-            leaveType
+            leaveType,
+            reason
         });
 
         await LeaveRequest.save();
@@ -110,11 +114,13 @@ exports.submitshortLeaveRequest = async (req, res, next) => {
         const {
             employeeId,
             employeeName,
+            email,
             status,
             Date,
             fromTime,
             toTime,
-            leaveType
+            leaveType,
+            reason
         } = req.body;
         const employee = await Employee.findById(employeeId);
         if (!employee) {
@@ -123,11 +129,13 @@ exports.submitshortLeaveRequest = async (req, res, next) => {
         const shortLeaverequest = new shortLeaveRequest({
             employeeId,
             employeeName,
+            email,
             status,
             Date,
             fromTime,
             toTime,
-            leaveType
+            leaveType,
+            reason
         });
         await shortLeaverequest.save();
         res.status(201).json(shortLeaverequest);
