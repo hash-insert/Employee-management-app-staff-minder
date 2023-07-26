@@ -32,7 +32,7 @@ const leaveRequestSchema = new mongoose.Schema({
   },
   leaveType: {
     type: String,
-    enum: ['short', 'full'],
+    default:'long',
     required: true,
   }
 });

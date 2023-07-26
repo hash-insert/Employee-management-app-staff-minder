@@ -20,7 +20,7 @@ const shortleaveRequestSchema = new mongoose.Schema({
   },
   leaveType: {
     type: String,
-    enum: ['short', 'full'],  
+    default:'short',
     required: true,
   },
   Date: {
