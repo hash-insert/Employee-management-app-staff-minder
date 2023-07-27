@@ -10,6 +10,7 @@ import LeaveCalendar from "./LeaveCalendar";
 import ShortLeaveForm from "./ShortLeave";
 import LongLeaveForm from "./LongLeave";
 import EmployeeNavbar from "./EmployeeNavbar";
+import { useUserContext } from "../../UserContext";
 
 const customTheme = extendTheme({
   colors: {
@@ -27,6 +28,8 @@ const EmployeeLeaveRequests = () => {
 
   const [showShortLeaveForm, setShowShortLeaveForm] = React.useState(false);
   const [showLongLeaveForm, setShowLongLeaveForm] = React.useState(false);
+  const { userEmail } = useUserContext();
+  console.log("userEmail:", userEmail);
 
   const handleApplyLeave = () => {
     setShowLongLeaveForm(true);
@@ -73,6 +76,7 @@ const EmployeeLeaveRequests = () => {
           onDayClick={handleDateSelect}
           value={selectedDates}
           events={calendarEvents}
+          userEmail={userEmail}
         />
 
         <Center>
@@ -147,7 +151,7 @@ const EmployeeLeaveRequests = () => {
                   end: endDate,
                   color: "red",
                   extendedProps: {
-                    reason,
+                    reason: reason,
                     fromDate: startDate,
                     toDate: endDate,
                   },
@@ -155,6 +159,7 @@ const EmployeeLeaveRequests = () => {
                 updateCalendarEvents(newEvent);
                 setShowLongLeaveForm(false);
               }}
+              updateCalendarEvents={updateCalendarEvents}
             />
           </ChakraProvider>
         )}

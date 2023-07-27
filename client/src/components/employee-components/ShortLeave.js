@@ -12,7 +12,7 @@ import {
   Divider,
 } from "@chakra-ui/react";
 
-const ShortLeaveForm = ({ onClose, onSubmit }) => {
+const ShortLeaveForm = ({ onClose }) => {
   const [formData, setFormData] = useState({
     date: "",
     fromTime: "",
@@ -107,6 +107,7 @@ const ShortLeaveForm = ({ onClose, onSubmit }) => {
         setErrors({});
         setIsSubmitting(false);
         onClose();
+        window.location.reload();
       } catch (error) {
         // Handle any errors that occurred during the API request
         console.error("Error while saving leave request:", error);

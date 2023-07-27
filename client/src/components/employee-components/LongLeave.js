@@ -10,9 +10,9 @@ import {
   Textarea,
   Heading,
   Divider,
-} from "@chakra-ui/react";
+} from "@chakra-ui/react"; 
 
-const LongLeaveForm = ({ onClose, onSubmit }) => {
+const LongLeaveForm = ({ onClose }) => {
   const [formData, setFormData] = useState({
     startDate: "",
     endDate: "",
@@ -90,7 +90,6 @@ const LongLeaveForm = ({ onClose, onSubmit }) => {
           "http://localhost:8000/api/employee/leaverequest",
           leaveRequestData
         );
-  
         // Assuming the backend responds with the saved data, you can access it from the response object
         console.log("Leave request saved:", response.data);
   
@@ -104,6 +103,7 @@ const LongLeaveForm = ({ onClose, onSubmit }) => {
         setErrors({});
         setIsSubmitting(false);
         onClose();
+        window.location.reload();
       } catch (error) {
         // Handle any errors that occurred during the API request
         console.error("Error while saving leave request:", error);
@@ -119,6 +119,7 @@ const LongLeaveForm = ({ onClose, onSubmit }) => {
       reason: "",
     });
     setErrors({});
+    onClose();
   };
 
   return (
@@ -199,7 +200,7 @@ const LongLeaveForm = ({ onClose, onSubmit }) => {
             mt={4}
             isLoading={isSubmitting}
           >
-            Save
+            Save 
           </Button>
 
           <Button colorScheme="red" mt={4} ml={2} onClick={handleCancel}>

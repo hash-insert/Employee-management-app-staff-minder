@@ -10,6 +10,7 @@ import Employees from "./components/admin-components/Employees";
 import Profile from "./components/Profile";
 import Reset from "./components/Reset";
 import { auth } from "./firebase";
+import { UserProvider } from "./UserContext";
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -33,6 +34,7 @@ const App = () => {
   }
 
   return (
+    <UserProvider>
       <Router>
         <ToastContainer />
         <Routes>
@@ -54,10 +56,14 @@ const App = () => {
               />
             </>
           ) : (
-            <Route path="/" element={<Login onLogin={() => setLoggedIn(true)} />} />
+            <Route
+              path="/"
+              element={<Login onLogin={() => setLoggedIn(true)} />}
+            />
           )}
         </Routes>
       </Router>
+    </UserProvider>
   );
 };
 
