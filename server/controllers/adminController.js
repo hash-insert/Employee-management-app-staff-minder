@@ -18,7 +18,7 @@ exports.addEmployee = async (req, res, next) => {
                 dateOfBirth,
                 phoneNumber,
                 password,
-                profilePicture
+                picture
             } = req.body;
             const existingEmployee = await Employee.findOne({email});
             if (existingEmployee) {
@@ -33,7 +33,7 @@ exports.addEmployee = async (req, res, next) => {
                 dateOfBirth,
                 phoneNumber,
                 password,
-                profilePicture
+                picture
             });
             employee.save().then(() => res.status(201).json(employee)).catch(next);
         });
