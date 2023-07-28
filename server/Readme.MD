@@ -14,7 +14,7 @@ The Admin Get all the Employees Details
 The Admin Update Employees Details
 ### PUT: http://localhost:8000/api/employees/64b4ea2b8b1cff15824baaf1(employee_id)
 
-### Json :
+### JSON DATA:
    {
         "name": "shobithaRaniAPambala",
         "email": "g@gmail.com",
@@ -31,7 +31,7 @@ The Admin Delete the Employees Details
 The  Admin can add the Employee Details 
 ### Post : http://localhost:8000/api/employees
 
- ### json:
+ ### JSON DATA:
  {
     "_id": "64b4ea2b8b1cff15824baaf1",
     "name": "shobitha",
@@ -54,7 +54,7 @@ The Admin Approve the paticular Leaverequest by employee_id
 The Admin Reject the paticular Leaverequest by employee_id
  ### PUT:  http://localhost:8000/api/employees/leaverequest/64b7b617efd2b501497c4f53/reject
 
- ### Json:
+ ### JSON DATA:
         {
             "employeeId": "64b6308aa11c352f4fa1df7b",
             "employeeName": "heloo",
@@ -75,7 +75,7 @@ The Admin can Approve the paticular Leaverequest by employee_id
 The Admin can Reject the paticular Leaverequest by employee_id
 ### Put:http://localhost:8000/api/employees/shortleaverequest/64ba71dfe60d20e404a402ce/reject
 
-### Json Data:
+### JSON DATA:
     {
         "employeeId": "64b524fdd912932e65b22923",
         "employeeName": "John Doe",
@@ -99,7 +99,7 @@ The Admin can Approve the paticular Leaverequest by employee_id
 The Admin can Reject the paticular Leaverequest by employee_id
 ### PUT: http://localhost:8000/api/employees/timesheets/64aebf095344fcd798f0db92/reject
 
-### Json Data:
+### JSON DATA:
     {
         "employeeId": "64aeb6c9e624d0ec8ba945a4",
         "weekStartDate": "2023-07-12T00:00:00.000Z",
@@ -142,10 +142,19 @@ The Employee  can fetch the Timesheets  through empoloyee Id
 The Employee can upadate the Employee Details through employee_id
 ### PUT: http://localhost:8000/api/employee/64c0d6b503316d2f4bedd4fe (UPADATE THE EMPLOYEE)
 
+The Employee can reset the pasword through email & newPassword
+### PUT :http://localhost:8000/api/employee/resetpassword
+
+### JSON DATA:
+    {
+        "email": "jon@example.com",
+        "newPassword": "hshinser@j"
+    }
+
 The Employee can entry  timesheet details
 ### POST :http://localhost:8000/api/employee/timesheets
 
-### JSON :
+### JSON DATA:
     {
         "employeeId" :"64b524fdd912932e65b22923",
         "employeeName": "alina",
@@ -168,7 +177,7 @@ The Employee can entry  timesheet details
 The employee can apply the longleave as per the required days
 ### POST:http://localhost:8000/api/employee/leaverequest
 
-### JSON:
+### JSON DATA:
     {
         "employeeId": "64bfca977291045826af74b0",
         "employeeName": "dimple",
@@ -184,7 +193,7 @@ The employee can apply the longleave as per the required days
 
 The employee can apply the shortleave  within  in a Day 
 ### POST: http://localhost:8000/api/employee/shortleaverequest
-### JSON :
+### JSON DATA:
     {
         "employeeId": "64b524fdd912932e65b22923",
         "employeeName": "John Doe",
