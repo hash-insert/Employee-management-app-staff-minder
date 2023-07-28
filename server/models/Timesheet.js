@@ -20,7 +20,7 @@ const timesheetSchema = new mongoose.Schema({
     year: { type: Number, required: true },
     month: { type: Number, required: true },
     week: { type: String, required: true },
-    date: { type: Date, required: true },
+    date: { type: Number, required: true },
     fromTime:{type: String,required:true},
     toTime:{type: String,required:true},
     documents: { type: [String],required:true }, 
