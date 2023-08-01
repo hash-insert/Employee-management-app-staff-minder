@@ -56,7 +56,7 @@ const ShortLeaveForm = ({ onClose }) => {
       try {
         // Check if employee with given email exists in the database
         const employeesResponse = await axios.get(
-          `http://localhost:8000/api/employees?email=${formData.email}`
+          `https://staff-minder-backend.onrender.com/api/employees?email=${formData.email}`
         );
 
         console.log(employeesResponse);
@@ -90,7 +90,7 @@ const ShortLeaveForm = ({ onClose }) => {
 
         // Make a POST request to create the leave request
         const response = await axios.post(
-          "http://localhost:8000/api/employee/shortleaverequest",
+          "https://staff-minder-backend.onrender.com/api/employee/shortleaverequest",
           leaveRequestData
         );
 

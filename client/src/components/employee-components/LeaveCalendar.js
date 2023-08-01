@@ -12,7 +12,7 @@ function LeaveCalendar({ onDayClick, userEmail }) {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/api/employees`)
+      .get(`https://staff-minder-backend.onrender.com/api/employees`)
       .then((response) => {
         // Find the employee with the given email
         const employee = response.data.find(
@@ -22,7 +22,7 @@ function LeaveCalendar({ onDayClick, userEmail }) {
         if (employee) {
           axios
             .get(
-              `http://localhost:8000/api/employee/${employee._id}/leaverequest`
+              `https://staff-minder-backend.onrender.com/api/employee/${employee._id}/leaverequest`
             )
             .then((leaveRequestsResponse) => {
               // Map the leave requests to calendar events format
@@ -39,7 +39,7 @@ function LeaveCalendar({ onDayClick, userEmail }) {
 
               axios
                 .get(
-                  `http://localhost:8000/api/employee/${employee._id}/shortleaverequest`
+                  `https://staff-minder-backend.onrender.com/api/employee/${employee._id}/shortleaverequest`
                 )
                 .then((shortLeaveRequestsResponse) => {
                   // Map the short leave requests to calendar events format

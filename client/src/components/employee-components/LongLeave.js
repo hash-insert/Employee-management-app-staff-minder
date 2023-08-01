@@ -52,7 +52,7 @@ const LongLeaveForm = ({ onClose }) => {
       try {
         // Check if employee with given email exists in the database
         const employeesResponse = await axios.get(
-          `http://localhost:8000/api/employees?email=${formData.email}`
+          `https://staff-minder-backend.onrender.com/api/employees?email=${formData.email}`
         );
 
         console.log(employeesResponse);
@@ -87,7 +87,7 @@ const LongLeaveForm = ({ onClose }) => {
    
         // Make a POST request to create the leave request
         const response = await axios.post(
-          "http://localhost:8000/api/employee/leaverequest",
+          "https://staff-minder-backend.onrender.com/api/employee/leaverequest",
           leaveRequestData
         );
         // Assuming the backend responds with the saved data, you can access it from the response object
