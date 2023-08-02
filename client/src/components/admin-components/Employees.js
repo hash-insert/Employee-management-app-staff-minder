@@ -35,7 +35,7 @@ const Employees = () => {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/employees");
+        const response = await fetch("https://staff-minder-backend.onrender.com/api/employees");
         const data = await response.json();
         setEmployees(data);
       } catch (error) {

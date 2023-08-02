@@ -33,6 +33,9 @@ const employeeSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    picture:{
+        type:String,
     }
 });
 

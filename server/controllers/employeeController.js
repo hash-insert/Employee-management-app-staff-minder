@@ -20,7 +20,6 @@ exports.getEmployeeProfile = async (req, res, next) => {
         next(error);
     }
 };
-
 exports.submitTimesheet = async (req, res, next) => {
     try {
         const { employeeId,employeeName,email,date,status, fromTime, toTime, documents, notes,timeDifference } = req.body;
@@ -61,10 +60,12 @@ exports.submitLeaveRequest = async (req, res, next) => {
         const {
             employeeId,
             employeeName,
+            email,
             status,
             fromDate,
             toDate,
-            leaveType
+            leaveType,
+            reason
         } = req.body;
 
         const employee = await Employee.findById(employeeId);
@@ -75,10 +76,12 @@ exports.submitLeaveRequest = async (req, res, next) => {
         const LeaveRequest = new Leaverequest({
             employeeId,
             employeeName,
+            email,
             status,
             fromDate,
             toDate,
-            leaveType
+            leaveType,
+            reason
         });
 
         await LeaveRequest.save();
@@ -91,7 +94,7 @@ exports.submitLeaveRequest = async (req, res, next) => {
 
 exports.resetPassword = async (req, res, next) => {
     try {
-        const { email, newPassword } = req.body;
+        const  {email, newPassword}  = req.body;
         const employee = await Employee.findOne({ email });
 
         if (!employee) {
@@ -111,11 +114,13 @@ exports.submitshortLeaveRequest = async (req, res, next) => {
         const {
             employeeId,
             employeeName,
+            email,
             status,
-            Date,
+            date,
             fromTime,
             toTime,
-            leaveType
+            leaveType,
+            reason
         } = req.body;
         const employee = await Employee.findById(employeeId);
         if (!employee) {
@@ -124,11 +129,13 @@ exports.submitshortLeaveRequest = async (req, res, next) => {
         const shortLeaverequest = new shortLeaveRequest({
             employeeId,
             employeeName,
+            email,
             status,
-            Date,
+            date,
             fromTime,
             toTime,
-            leaveType
+            leaveType,
+            reason
         });
         await shortLeaverequest.save();
         res.status(201).json(shortLeaverequest);
@@ -191,6 +198,60 @@ exports.getEmployeeTimesheetsByDate = async (req, res, next) => {
         }
         const timesheets = await Timesheet.find({ employeeId, year, month, week, date });
         res.json(timesheets);
+    } catch (error) {
+        next(error);
+    }
+};
+
+exports.getEachLeaveRequests = async (req, res, next) => {
+    try {
+        const employeeId = req.params.employeeId; 
+        const leaveRequests = await Leaverequest.find({ employeeId: employeeId });
+        if (!leaveRequests || leaveRequests.length === 0) {
+            return res.status(404).json({ message: 'No leave requests found for this employee.' });
+        }
+        res.json(leaveRequests);
+    } catch (error) {
+        next(error);
+    }
+};
+
+exports.getEachshortLeaveRequests = async (req, res, next) => {
+    try {
+        const employeeId = req.params.employeeId; 
+        const leaveRequests = await shortLeaveRequest.find({ employeeId: employeeId });
+        if (!leaveRequests || leaveRequests.length === 0) {
+            return res.status(404).json({ message: 'No leave requests found for this employee.' });
+        }
+        res.json(leaveRequests);
+    } catch (error) {
+        next(error);
+    }
+};
+
+exports.editEmployee = async (req, res, next) => {
+    try {
+        const {employeeId} =req.params;
+        const { name, email, phoneNumber, picture} = req.body;
+        const employee = await Employee.findById(employeeId);
+        if (!employee) {
+            return res.status(404).json({ error: 'Employee not found.' });
+        } 
+        if (name) {
+            employee.name = name;
+        }
+        if (email) {
+            employee.email = email;
+        }
+        if (phoneNumber) {
+            employee.phoneNumber = phoneNumber;
+        }
+        if (picture) {
+            employee.picture = picture;
+        }
+       
+        await employee.save();
+        res.status(200).json({ message: 'Employee information updated successfully.' });
     } catch (error) {
         next(error);
     }
