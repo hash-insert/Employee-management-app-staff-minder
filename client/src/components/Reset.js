@@ -28,7 +28,8 @@ const customTheme = extendTheme({
   },
 });
 const Reset = () => {
-  const [email, setEmail] = useState("");
+  const [email , setEmail] = useState("");
+  const [emailError, setEmailError] = useState(false);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [emailError, setEmailError] = useState(false);
@@ -47,6 +48,12 @@ const Reset = () => {
     setPassword(e.target.value);
     setPasswordError(false);
   };
+
+  const handleEmailInputChange = (e) => {
+    setEmail(e.target.value);
+    setEmailError(false);
+  };
+
   const handleConfirmPasswordInputChange = (e) => {
     setConfirmPassword(e.target.value);
     setConfirmPasswordError(false);

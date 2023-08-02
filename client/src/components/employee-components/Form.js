@@ -296,5 +296,6 @@ const EventForm = ({onClose,onSubmit}) => {
       </Box>
     </Box>
   );
-};
+}
+
 export default EventForm;
