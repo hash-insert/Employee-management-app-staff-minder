@@ -124,7 +124,7 @@ exports.approveLeaverequest = async (req, res, next) => {
         const {leaverequestId} = req.params;
 
         const leaverequest = await LeaveRequest.findByIdAndUpdate(leaverequestId, {
-            status: "approved"
+            status: "approve"
         }, {new: true});
 
         if (! leaverequest) {
@@ -142,7 +142,7 @@ exports.rejectLeaveRequest = async (req, res, next) => {
         const { leaverequestId } = req.params;
 
         const leaverequest = await LeaveRequest.findByIdAndUpdate(leaverequestId, {
-            status: "rejected"
+            status: "reject"
         }, { new: true });
 
         if (!leaverequest) {
@@ -168,7 +168,7 @@ exports.approveshortLeaverequest = async (req, res, next) => {
     try {
         const {shortleaverequestId} = req.params;
         const shortleaverequest = await shortLeaveRequest.findByIdAndUpdate(shortleaverequestId, {
-            status: "approved"
+            status: "approve"
         }, {new: true});
         if (! shortleaverequest) {
             return res.status(404).json({message: 'shortleaverequest not found'});
@@ -183,7 +183,7 @@ exports.rejectshortLeaverequest = async (req, res, next) => {
     try {
         const { shortleaverequestId } = req.params;
         const shortLeaverequest = await shortLeaveRequest.findByIdAndUpdate(shortleaverequestId, {
-            status: "rejected"
+            status: "reject"
         }, { new: true });
         
         if (!shortLeaverequest) {

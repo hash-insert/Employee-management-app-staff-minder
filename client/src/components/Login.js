@@ -20,7 +20,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth, firestore } from "../firebase";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { useUserContext } from "../UserContext";
 const customTheme = extendTheme({
   colors: {
     brandBlue: "#0A6EBD",
@@ -50,6 +50,8 @@ const Login = ({ onLogin }) => {
   const handleTogglePassword = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
+
+  const { setUserEmail } = useUserContext();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -82,11 +84,13 @@ const Login = ({ onLogin }) => {
         onLogin(); // Call the onLogin prop to inform the parent component about successful login
   
         if (userRole === "admin") {
+          setUserEmail(email); 
           navigate("/admin-dashboard");
           toast.success("Admin Logged In successfully");
           console.log("Admin login successfully");
           onLogin("admin");
         } else if (userRole === "employee") {
+          setUserEmail(email); 
           navigate("/employee-dashboard");
           toast.success("Employee Logged In successfully");
           console.log("Employee login successfully");
@@ -188,7 +192,7 @@ const Login = ({ onLogin }) => {
                 Login
               </Button>
               <Text color="white" mt={2} align="center">
-                <Link href="#">Forget Password?</Link>
+                <Link href="/reset">Forget Password?</Link>
               </Text>
             </form>
           </VStack>

@@ -23,13 +23,13 @@ exports.getEmployeeProfile = async (req, res, next) => {
 
 exports.submitTimesheet = async (req, res, next) => {
     try {
-        const { employeeId,employeeName, year, month, week, date,status, fromTime, toTime, documents, notes } = req.body;
+        const { employeeId,employeeName,email,date,status, fromTime, toTime, documents, notes,timeDifference } = req.body;
         const employee = await Employee.findById(employeeId);
         if (!employee) {
             return res.status(404).json({ message: 'Employee not found' });
         }
         const timesheet = new Timesheet({
-            employeeId,employeeName, year, month, week, date,status, fromTime, toTime, documents, notes
+            employeeId,employeeName,email,date,status, fromTime, toTime, documents, notes,timeDifference
         });
         await timesheet.save();
         res.status(201).json(timesheet);
