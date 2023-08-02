@@ -1,3 +1,4 @@
+
 const Employee = require('../models/Employee');
 const Timesheet = require('../models/Timesheet');
 const LeaveRequest = require('../models/leaveRequest');
@@ -16,7 +17,8 @@ exports.addEmployee = async (req, res, next) => {
                 dateOfJoining,
                 dateOfBirth,
                 phoneNumber,
-                password
+                password,
+                picture
             } = req.body;
             const existingEmployee = await Employee.findOne({email});
             if (existingEmployee) {
@@ -30,7 +32,8 @@ exports.addEmployee = async (req, res, next) => {
                 dateOfJoining,
                 dateOfBirth,
                 phoneNumber,
-                password
+                password,
+                picture
             });
             employee.save().then(() => res.status(201).json(employee)).catch(next);
         });
@@ -83,24 +86,6 @@ exports.getAllEmployees = async (req, res, next) => {
         next(error);
     }
 };
-
-// exports.approveTimesheet = async (req, res, next) => {
-//     try {
-//         const {timesheetId} = req.params;
-//         validateTimesheetId(req, res, () => {
-//             Timesheet.findByIdAndUpdate(timesheetId, {
-//                 approved: true
-//             }, {new: true}).then(timesheet => {
-//                 if (!timesheet) {
-//                     return res.status(404).json({message: 'Timesheet not found'});
-//                 }
-//                 res.json(timesheet);
-//             }).catch(next);
-//         });
-//     } catch (error) {
-//         next(error);
-//     }
-// };
 
 exports.getAllTimesheets = async (req, res, next) => {
     try {
@@ -218,7 +203,6 @@ exports.rejectTimesheet = async (req, res, next) => {
         const timesheet = await Timesheet.findByIdAndUpdate(timesheetId, {
             status: "rejected"
         }, { new: true });
-        
         if (!timesheet) {
             return res.status(404).json({ message: 'Timesheet not found' });
         }

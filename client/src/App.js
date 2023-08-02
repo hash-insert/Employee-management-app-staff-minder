@@ -16,7 +16,6 @@ import Reset from "./components/Reset";
 import { auth } from "./firebase";
 import { UserProvider } from "./UserContext";
 
-
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
