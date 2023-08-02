@@ -192,7 +192,7 @@ const Login = ({ onLogin }) => {
                 Login
               </Button>
               <Text color="white" mt={2} align="center">
-                <Link href="#">Forget Password?</Link>
+                <Link href="/reset">Forget Password?</Link>
               </Text>
             </form>
           </VStack>

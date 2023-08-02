@@ -3,14 +3,19 @@ import { ToastContainer } from "react-toastify";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Login from "./components/Login";
 import AdminLeaveRequests from "./components/admin-components/AdminLeaveRequests";
+import Timesheets from "./components/admin-components/AdminTimesheet";
 import EmployeeLeaveRequests from "./components/employee-components/EmployeeLeaveRequests";
+import Timesheet from "./components/employee-components/Timesheet";
 import AdminDashboard from "./components/admin-components/AdminDashboard";
 import EmployeeDashboard from "./components/employee-components/EmployeeDashboard";
+import AdminTimesheets from "./components/admin-components/AdminTimesheets";
+import EmployeeTimesheet from "./components/employee-components/EmployeeTimesheet";
 import Employees from "./components/admin-components/Employees";
 import Profile from "./components/Profile";
 import Reset from "./components/Reset";
 import { auth } from "./firebase";
 import { UserProvider } from "./UserContext";
+
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -38,28 +43,30 @@ const App = () => {
       <Router>
         <ToastContainer />
         <Routes>
+        <Route path="/reset" element={<Reset />} />
           {loggedIn ? (
             <>
               <Route path="/" element={<AdminLeaveRequests />} />
               <Route path="/leave-requests" element={<AdminLeaveRequests />} />
+              <Route path="/timesheets" element={<AdminTimesheets />} />
               <Route path="/admin-dashboard" element={<AdminDashboard />} />
+              
               <Route
                 path="/employee-dashboard"
                 element={<EmployeeDashboard />}
               />
               <Route path="/employees" element={<Employees />} />
-              <Route path="/reset" element={<Reset />} />
+              
               <Route path="/profile" element={<Profile />} />
+              <Route path="/timesheet" element={<EmployeeTimesheet />} />
               <Route
                 path="/employee-leave-requests"
                 element={<EmployeeLeaveRequests />}
               />
             </>
           ) : (
-            <Route
-              path="/"
-              element={<Login onLogin={() => setLoggedIn(true)} />}
-            />
+            <Route path="/" element={<Login onLogin={() => setLoggedIn(true)} />} />
+            
           )}
         </Routes>
       </Router>

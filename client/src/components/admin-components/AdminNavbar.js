@@ -75,7 +75,7 @@ const AdminNavbar = () => {
              Leave Requests
            </Link>
            <Link
-             href="/timesheet"
+             href="/timesheets"
              p="4"
              color={isCurrentRoute("/timesheet") ? "blue.300" : "white"}
              fontWeight="bold"

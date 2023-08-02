@@ -10,14 +10,13 @@ import {
   Textarea,
   Heading,
   Divider,
-} from "@chakra-ui/react"; 
+} from "@chakra-ui/react";
 
-const LongLeaveForm = ({ onClose }) => {
+const LongLeaveForm = ({ onClose, onSubmit }) => {
   const [formData, setFormData] = useState({
     startDate: "",
     endDate: "",
     reason: "",
-    email: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
@@ -28,7 +27,7 @@ const LongLeaveForm = ({ onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     // Validation
     const newErrors = {};
     if (!formData.startDate) {
@@ -40,70 +39,31 @@ const LongLeaveForm = ({ onClose }) => {
     if (!formData.reason) {
       newErrors.reason = "Please enter a reason.";
     }
-    if (!formData.email) {
-      newErrors.email = "Please enter an email.";
-    }
-  
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
       setIsSubmitting(true);
-  
+
       try {
-        // Check if employee with given email exists in the database
-        const employeesResponse = await axios.get(
-          `https://staff-minder-backend.onrender.com/api/employees?email=${formData.email}`
-        );
-
-        console.log(employeesResponse);
-  
-        const employees = employeesResponse.data;
-
-        console.log(employees);
-
-        const employee = employees.find(
-          (emp) => emp.email === formData.email
-        );
-
-        console.log(employee)
-        if (!employees || employees.length === 0) {
-          // Employee with the given email does not exist
-          newErrors.email = "Employee with this email does not exist.";
-          setErrors(newErrors);
-          setIsSubmitting(false);
-          return;
-        }  
-        // Create the leave request data
-        const leaveRequestData = {
-          employeeId: employee._id,
-          employeeName: employee.name,
-          email: formData.email,
-          status: "pending", // Assuming the status is set to "Pending" by default
-          fromDate: formData.startDate,
-          toDate: formData.endDate,
-          leaveType: "long", // Assuming the default leave type is "long"
-          reason: formData.reason,
-        };
-   
-        // Make a POST request to create the leave request
+        // Make a POST request to the backend API
         const response = await axios.post(
-          "https://staff-minder-backend.onrender.com/api/employee/leaverequest",
-          leaveRequestData
+          "http://localhost:8000/api/employee/leaverequest",
+          formData
         );
+
         // Assuming the backend responds with the saved data, you can access it from the response object
         console.log("Leave request saved:", response.data);
-  
+
         // Reset the form and close the modal
         setFormData({
           startDate: "",
           endDate: "",
           reason: "",
-          email: "",
         });
         setErrors({});
         setIsSubmitting(false);
         onClose();
-        window.location.reload();
       } catch (error) {
         // Handle any errors that occurred during the API request
         console.error("Error while saving leave request:", error);
@@ -111,7 +71,7 @@ const LongLeaveForm = ({ onClose }) => {
       }
     }
   };
-  
+
   const handleCancel = () => {
     setFormData({
       startDate: "",
@@ -119,7 +79,6 @@ const LongLeaveForm = ({ onClose }) => {
       reason: "",
     });
     setErrors({});
-    onClose();
   };
 
   return (
@@ -151,17 +110,6 @@ const LongLeaveForm = ({ onClose }) => {
         </Heading>
         <Divider borderColor="white" mb={4} />
         <form onSubmit={handleSubmit}>
-          <FormControl isInvalid={!!errors.email} mt={4}>
-            <FormLabel>Email</FormLabel>
-            <Input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-            />
-            <FormErrorMessage>{errors.email}</FormErrorMessage>
-          </FormControl>
-
           <FormControl isInvalid={!!errors.startDate} mt={4}>
             <FormLabel>Start Date</FormLabel>
             <Input
@@ -200,7 +148,7 @@ const LongLeaveForm = ({ onClose }) => {
             mt={4}
             isLoading={isSubmitting}
           >
-            Save 
+            Save
           </Button>
 
           <Button colorScheme="red" mt={4} ml={2} onClick={handleCancel}>

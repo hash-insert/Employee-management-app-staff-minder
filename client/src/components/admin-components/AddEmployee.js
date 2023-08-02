@@ -132,7 +132,7 @@ const AddEmployee = ({ isOpen, onClose }) => {
       };
 
       // Use Axios to post data to the backend
-      await axios.post("https://staff-minder-backend.onrender.com/api/employees", employeeData);
+      await axios.post("http://localhost:8000/api/employees", employeeData);
 
       console.log("Employee data saved to Firestore and backend.");
       toast.success("Employee added successfully.");
