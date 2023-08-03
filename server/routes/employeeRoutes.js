@@ -3,7 +3,7 @@ const employeeController = require('../controllers/employeeController');
 const router = express.Router();
 
 router.get('/:employeeId', employeeController.getEmployeeProfile);
-router.put('/:employeeId', employeeController.editEmployee);
+router.put('/update/:employeeId', employeeController.editEmployee);
 router.put('/resetpassword',employeeController.resetPassword);
 router.post('/leaverequest',employeeController.submitLeaveRequest);
 router.get('/:employeeId/leaverequest',employeeController.getEachLeaveRequests);

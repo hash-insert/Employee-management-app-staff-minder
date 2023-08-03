@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { sendPasswordResetEmail } from "firebase/auth";
+
 import {auth,firestore} from "../firebase";
 
 import {
@@ -32,7 +33,7 @@ const Reset = () => {
   const [emailError, setEmailError] = useState(false);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [emailError, setEmailError] = useState(false);
+ // const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -47,11 +48,6 @@ const Reset = () => {
   const handlePasswordInputChange = (e) => {
     setPassword(e.target.value);
     setPasswordError(false);
-  };
-
-  const handleEmailInputChange = (e) => {
-    setEmail(e.target.value);
-    setEmailError(false);
   };
 
   const handleConfirmPasswordInputChange = (e) => {

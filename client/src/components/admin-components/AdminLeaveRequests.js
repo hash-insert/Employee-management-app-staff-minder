@@ -84,13 +84,13 @@ const AdminLeaveRequests = () => {
       })
       .then((response) => {
         // On successful update, update the local state to reflect the change
-        const updatedLeaveRequests = shortLeaveRequests.map((request) => {
+        const updatedshortLeaveRequests = shortLeaveRequests.map((request) => {
           if (request.id === requestId) {
             return { ...request, status: newStatus };
           }
           return request;
         });
-        setShortLeaveRequests(updatedLeaveRequests);
+        setShortLeaveRequests(updatedshortLeaveRequests);
       })
       .catch((error) => {
         console.error("Error updating leave request status:", error);
@@ -201,7 +201,7 @@ const AdminLeaveRequests = () => {
                           colorScheme={
                             request.status === "pending"
                               ? "yellow"
-                              : request.status === "reject"
+                              : request.status === "approve"
                               ? "green"
                               : "red"
                               
