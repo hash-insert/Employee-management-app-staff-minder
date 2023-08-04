@@ -47,7 +47,7 @@ const Timesheet = () => {
     <AdminNavbar/>
     <Center>
     <Heading size="lg" mb={4} textAlign="center" color="black">
-            Leave Requests
+            Timesheets
           </Heading>
     </Center>
       <Calendar

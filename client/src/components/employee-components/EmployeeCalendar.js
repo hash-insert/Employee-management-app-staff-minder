@@ -53,7 +53,7 @@ function Calendar({userEmail, onDayClick }) {
 
   useEffect(() => {
     axios
-      .get(`http://staff-minder-backend.onrender.com/api/employees`)
+      .get(`https://staff-minder-backend.onrender.com/api/employees`)
       .then((response) => {
         // Find the employee with the given email
         const employee = response.data.find(
@@ -64,7 +64,7 @@ function Calendar({userEmail, onDayClick }) {
           //console.log(employee._id)
           axios
             .get(
-              `http://lstaff-minder-backend.onrender.com/api/employee/${employee._id}/timesheets`
+              `https://staff-minder-backend.onrender.com/api/employee/${employee._id}/timesheets`
             )
             .then((TimesheetRequestsResponse) => {
               // Map the leave requests to calendar events format
@@ -72,6 +72,7 @@ function Calendar({userEmail, onDayClick }) {
                 (TimesheetRequest) => ({
                   title: TimesheetRequest.timeDifference, // You can set the title here
                   start: TimesheetRequest.date,
+                  
                   //startTime:TimesheetRequest.fromTime,
                   extendedProps: {
                     date:TimesheetRequest.date,
@@ -136,7 +137,7 @@ function Calendar({userEmail, onDayClick }) {
         
         eventDidMount={(info) => {
           return new bootstrap.Popover(info.el, {
-            //title: info.event.title,
+            title: info.event.title,
             placement: "auto",
             trigger: "hover",
             customClass: "popoverStyle",
@@ -147,6 +148,22 @@ function Calendar({userEmail, onDayClick }) {
         dateClick={(info) => {
           onDayClick(new Date(info.dateStr));
         }}
+        eventContent={(info) => {
+          return (
+            <div
+              className="fc-event-title fc-sticky"
+              style={{
+                backgroundColor:
+                  info.event.title === " ",
+                color: "black",
+                padding: "2px 5px",
+                borderRadius: "5px",
+              }}
+            >
+              {info.event.title}
+            </div>
+          );
+            }}
       />
     </div>
   );

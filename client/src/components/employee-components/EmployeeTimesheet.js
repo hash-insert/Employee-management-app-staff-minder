@@ -104,7 +104,7 @@ const Timesheet = () => {
                 date: formData.date,
                 title:formData.timeDifference,
                 //title:formData.empName,
-                //color: "green",
+                color: "green",
                 extendedProps: {
                   date: formData.date,
                   empName:formData.empName,

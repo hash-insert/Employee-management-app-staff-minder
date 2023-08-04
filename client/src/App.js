@@ -3,9 +3,7 @@ import { ToastContainer } from "react-toastify";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Login from "./components/Login";
 import AdminLeaveRequests from "./components/admin-components/AdminLeaveRequests";
-//import Timesheets from "./components/admin-components/AdminTimesheet";
 import EmployeeLeaveRequests from "./components/employee-components/EmployeeLeaveRequests";
-//import Timesheet from "./components/employee-components/Timesheet";
 import AdminDashboard from "./components/admin-components/AdminDashboard";
 import EmployeeDashboard from "./components/employee-components/EmployeeDashboard";
 import AdminTimesheets from "./components/admin-components/AdminTimesheets";
@@ -47,8 +45,8 @@ const App = () => {
             <>
               <Route path="/" element={<AdminLeaveRequests />} />
               <Route path="/leave-requests" element={<AdminLeaveRequests />} />
-              <Route path="/timesheets" element={<AdminTimesheets />} />
               <Route path="/admin-dashboard" element={<AdminDashboard />} />
+              <Route path="/timesheets" element={<AdminTimesheets />} />
               
               <Route
                 path="/employee-dashboard"

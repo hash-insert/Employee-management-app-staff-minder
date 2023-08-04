@@ -40,8 +40,9 @@ const EventForm = ({onClose,onSubmit}) => {
     const minutes = Math.floor((timeDiffInMs / 1000 / 60) % 60);
     const formattedHours = hours.toString().padStart(2, '0');
   const formattedMinutes = minutes.toString().padStart(2, '0');
+  let haurs = "hrs";
 
-  return `${formattedHours}:${formattedMinutes}`;
+  return `${formattedHours}:${formattedMinutes} ${haurs}`;
   };
 
   const handleSubmit = async(e) => {
@@ -90,7 +91,7 @@ const EventForm = ({onClose,onSubmit}) => {
       try {
         // Check if employee with given email exists in the database
         const employeesResponse = await axios.get(
-          `http://staff-minder-backend.onrender.com/api/employees?email=${formData.email}`
+          `https://staff-minder-backend.onrender.com/api/employees?email=${formData.email}`
         );
 
         console.log(employeesResponse);
@@ -126,7 +127,7 @@ const EventForm = ({onClose,onSubmit}) => {
 
         // Make a POST request to create the leave request
         const response = await axios.post(
-          "http://staff-minder-backend.onrender.com/api/employee/timesheets",{...leaveRequestData,timeDifference}
+          "https://staff-minder-backend.onrender.com/api/employee/timesheets",{...leaveRequestData,timeDifference}
           
         );
 
@@ -147,7 +148,7 @@ const EventForm = ({onClose,onSubmit}) => {
         setIsSubmitting(false);
         
         onClose();
-       // window.location.reload();
+        window.location.reload();
       } catch (error) {
         // Handle any errors that occurred during the API request
         console.error("Error while saving leave request:", error.response.data);

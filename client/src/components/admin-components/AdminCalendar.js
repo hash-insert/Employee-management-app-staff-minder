@@ -26,13 +26,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import * as bootstrap from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-//import EventForm from './Form';
-const customTheme = extendTheme({
-  colors: {
-    brandBlue: "#0A6EBD",
-    brandLightBlue: "#45cfdd",
-  },
-});
+
 
 function Calendar({ events, onDayClick }) {
   const [calenderevents, setCalenderEvents] = useState([]);
@@ -81,7 +75,7 @@ function Calendar({ events, onDayClick }) {
     // For demonstration, let's use mock data
     const fetchAllTimesheets = () => {
       axios
-        .get("http://staff-minder-backend.onrender.com/api/employees/timesheets")
+        .get("https://staff-minder-backend.onrender.com/api/employees/timesheets")
         .then((response) => {
           // Assuming the response data is an array of timesheets, you can set the state accordingly.
           const allTimesheets = response.data;
@@ -90,6 +84,7 @@ function Calendar({ events, onDayClick }) {
           const calendarEvents = allTimesheets.map((timesheet) => ({
             title: timesheet.employeeName,
             start: timesheet.date ,
+            backgroundColor: "green",
             extendedProps: {
               date:timesheet.date,
               empName:timesheet.employeeName,
@@ -103,6 +98,7 @@ function Calendar({ events, onDayClick }) {
           }));
           // Set the state with the transformed data
           setCalenderEvents(calendarEvents);
+          
         })
         .catch((error) => {
           console.error("Error fetching timesheets:", error);
@@ -129,7 +125,8 @@ function Calendar({ events, onDayClick }) {
 
   return (
     <div>
-      <Center >
+      
+      <Center>
       
       <Input
         type="text"
@@ -169,6 +166,22 @@ function Calendar({ events, onDayClick }) {
         dateClick={(info) => {
           onDayClick(new Date(info.dateStr));
         }}
+        eventContent={(info) => {
+          return (
+            <div
+              className="fc-event-title fc-sticky"
+              style={{
+                backgroundColor:
+                  info.event.title === "Short Leave" ? "#ffcc00" : "",
+                color: "black",
+                padding: "2px 5px",
+                borderRadius: "5px",
+              }}
+            >
+              {info.event.title}
+            </div>
+          );
+            }}
       />
     </div>
   );

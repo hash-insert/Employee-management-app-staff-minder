@@ -38,7 +38,7 @@ const AdminLeaveRequests = () => {
   useEffect(() => {
     // Fetch pending leave requests
     axios
-      .get("http://staff-minder-backend.onrender.com/api/employees/leaverequest")
+      .get("https://staff-minder-backend.onrender.com/api/employees/leaverequest")
       .then((response) => {
         setLeaveRequests(response.data);
       })
@@ -47,7 +47,7 @@ const AdminLeaveRequests = () => {
       });
 
       axios
-      .get("http://staff-minder-backend.onrender.com/api/employees/shortleaverequest")
+      .get("https://staff-minder-backend.onrender.com/api/employees/shortleaverequest")
       .then((response) => {
         setShortLeaveRequests(response.data);
       })
@@ -79,7 +79,7 @@ const AdminLeaveRequests = () => {
   // Handle status change
   const handleStatusChange = (requestId, newStatus) => {
     axios
-      .put(`http://staff-minder-backend.onrender.com/api/employees/shortleaverequest/${requestId}/${newStatus}`, {
+      .put(`https://staff-minder-backend.onrender.com/api/employees/shortleaverequest/${requestId}/${newStatus}`, {
         status: newStatus,
       })
       .then((response) => {
@@ -98,7 +98,7 @@ const AdminLeaveRequests = () => {
     }
     const handleStatusChanges = (requestId, newStatus) => {
         axios
-          .put(`http://staff-minder-backend.onrender.com/api/employees/leaverequest/${requestId}/${newStatus}`, {
+          .put(`https://staff-minder-backend.onrender.com/api/employees/leaverequest/${requestId}/${newStatus}`, {
             status: newStatus,
           })
           .then((response) => {

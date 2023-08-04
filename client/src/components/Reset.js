@@ -89,7 +89,7 @@ const Reset = () => {
       await sendPasswordResetEmail(auth,email);
 
       // Make a POST request to the backend API to reset the password in MongoDB
-      const response = await axios.put("http://localhost:8000/api/employee/resetpassword", {
+      const response = await axios.put("https://staff-minder-backend.onrender.com/api/employee/resetpassword", {
         email,
         newPassword: password,
       });

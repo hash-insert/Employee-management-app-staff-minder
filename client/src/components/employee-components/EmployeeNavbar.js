@@ -80,7 +80,7 @@ const EmployeeNavbar = () => {
              color={isCurrentRoute("/timesheet") ? "blue.300" : "white"}
              fontWeight="bold"
            >
-             Timesheets
+             Timesheet
            </Link>
          </Box>
           ) : (
@@ -101,10 +101,10 @@ const EmployeeNavbar = () => {
                 <DrawerBody>
                   <VStack spacing={4} align="stretch">
                     <Link href="/timesheet" p="4" color="black" fontWeight="bold">
-                      Timesheets
+                      Timesheet
                     </Link>
                     <Link href="/employee-leave-requests" p="4" color="black" fontWeight="bold">
-                      LeaveRequests
+                      Leave Requests
                     </Link>
                   </VStack>
                 </DrawerBody>

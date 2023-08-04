@@ -77,7 +77,7 @@ const AdminNavbar = () => {
            <Link
              href="/timesheets"
              p="4"
-             color={isCurrentRoute("/timesheet") ? "blue.300" : "white"}
+             color={isCurrentRoute("/timesheets") ? "blue.300" : "white"}
              fontWeight="bold"
            >
              Timesheets
@@ -119,7 +119,7 @@ const AdminNavbar = () => {
                     <Link href="/leave-requests" p="4" color="black" fontWeight="bold">
                       Leave Requests
                     </Link>
-                    <Link href="/timesheet" p="4" color="black" fontWeight="bold">
+                    <Link href="/timesheets" p="4" color="black" fontWeight="bold">
                       Timesheets
                     </Link>
                     <Link href="/employees" p="4" color="black" fontWeight="bold">
