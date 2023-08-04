@@ -90,7 +90,7 @@ const EventForm = ({onClose,onSubmit}) => {
       try {
         // Check if employee with given email exists in the database
         const employeesResponse = await axios.get(
-          `http://localhost:8000/api/employees?email=${formData.email}`
+          `http://staff-minder-backend.onrender.com/api/employees?email=${formData.email}`
         );
 
         console.log(employeesResponse);
@@ -126,7 +126,7 @@ const EventForm = ({onClose,onSubmit}) => {
 
         // Make a POST request to create the leave request
         const response = await axios.post(
-          "http://localhost:8000/api/employee/timesheets",{...leaveRequestData,timeDifference}
+          "http://staff-minder-backend.onrender.com/api/employee/timesheets",{...leaveRequestData,timeDifference}
           
         );
 

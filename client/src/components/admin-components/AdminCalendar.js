@@ -81,7 +81,7 @@ function Calendar({ events, onDayClick }) {
     // For demonstration, let's use mock data
     const fetchAllTimesheets = () => {
       axios
-        .get("http://localhost:8000/api/employees/timesheets")
+        .get("http://staff-minder-backend.onrender.com/api/employees/timesheets")
         .then((response) => {
           // Assuming the response data is an array of timesheets, you can set the state accordingly.
           const allTimesheets = response.data;

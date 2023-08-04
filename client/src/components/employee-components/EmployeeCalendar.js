@@ -53,7 +53,7 @@ function Calendar({userEmail, onDayClick }) {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/api/employees`)
+      .get(`http://staff-minder-backend.onrender.com/api/employees`)
       .then((response) => {
         // Find the employee with the given email
         const employee = response.data.find(
@@ -64,7 +64,7 @@ function Calendar({userEmail, onDayClick }) {
           //console.log(employee._id)
           axios
             .get(
-              `http://localhost:8000/api/employee/${employee._id}/timesheets`
+              `http://lstaff-minder-backend.onrender.com/api/employee/${employee._id}/timesheets`
             )
             .then((TimesheetRequestsResponse) => {
               // Map the leave requests to calendar events format
