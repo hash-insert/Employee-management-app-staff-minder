@@ -4,12 +4,10 @@ import {
   Center,
   extendTheme,
   VStack,
-  Link,
   Text,
   Box,
   Image,
-  SimpleGrid,
-  Flex
+  Flex,
 } from "@chakra-ui/react";
 import image1 from "../../assets/image1.jpg";
 import image3 from "../../assets/image3.jpg";
@@ -48,7 +46,6 @@ const EmployeeDashboard = () => {
               <Image src={image1} alt="Image 1" mt={4} borderRadius="md" />
             </Center>{" "}
           </Box>
-          // Inside your component or JSX code
           <Box
             p={4}
             bg="transparent"

@@ -55,49 +55,48 @@ const Login = ({ onLogin }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Email validation using regex
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       setEmailError(true);
       return;
     }
-    // Password validation using regex
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
     if (!passwordRegex.test(password)) {
       setPasswordError(true);
       return;
     }
-  
+
     try {
       console.log("Attempting to log in...");
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       const user = userCredential.user;
-  
-      // Get the user's role from Firestore
       const employeeRef = doc(collection(firestore, "employees"), user.uid);
       const employeeDocSnap = await getDoc(employeeRef);
-  
+
       if (employeeDocSnap.exists()) {
         console.log("User data found in Firestore.");
         const employeeData = employeeDocSnap.data();
-        const userRole = employeeData.role; // Assuming the role is stored as "role" in the Firestore document
-        onLogin(); // Call the onLogin prop to inform the parent component about successful login
-  
+        const userRole = employeeData.role;
+        onLogin();
         if (userRole === "admin") {
-          setUserEmail(email); 
+          setUserEmail(email);
           navigate("/admin-dashboard");
           toast.success("Admin Logged In successfully");
           console.log("Admin login successfully");
           onLogin("admin");
         } else if (userRole === "employee") {
-          setUserEmail(email); 
+          setUserEmail(email);
           navigate("/employee-dashboard");
           toast.success("Employee Logged In successfully");
           console.log("Employee login successfully");
           onLogin("employee");
         } else {
           console.log("Unknown role:", userRole);
-          // Handle other roles or redirect to a default dashboard if needed
         }
       } else {
         console.log("User data not found in Firestore.");

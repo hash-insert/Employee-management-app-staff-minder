@@ -16,7 +16,7 @@ import EmployeeCard from "./EmployeeCard";
 import avatar from "../../assets/profile.png";
 import { FiSearch, FiPlus } from "react-icons/fi";
 import AddEmployee from "./AddEmployee";
-import { format } from 'date-fns';
+import { format } from "date-fns";
 import AdminNavbar from "./AdminNavbar";
 
 const customTheme = extendTheme({
@@ -35,7 +35,9 @@ const Employees = () => {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const response = await fetch("https://staff-minder-backend.onrender.com/api/employees");
+        const response = await fetch(
+          "https://staff-minder-backend.onrender.com/api/employees"
+        );
         const data = await response.json();
         setEmployees(data);
       } catch (error) {
@@ -143,8 +145,14 @@ const Employees = () => {
                   name: employee.name,
                   role: `Role: ${employee.role}`,
                   team: `Team : ${employee.team}`,
-                  dateOfJoining: format(new Date(employee.dateOfJoining), 'yyyy-MM-dd'),
-                  dateOfBirth: format(new Date(employee.dateOfBirth), 'yyyy-MM-dd'),
+                  dateOfJoining: format(
+                    new Date(employee.dateOfJoining),
+                    "yyyy-MM-dd"
+                  ),
+                  dateOfBirth: format(
+                    new Date(employee.dateOfBirth),
+                    "yyyy-MM-dd"
+                  ),
                   email: employee.email,
                   profilePicture: avatar,
                 }}

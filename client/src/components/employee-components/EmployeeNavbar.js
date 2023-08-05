@@ -34,7 +34,6 @@ const EmployeeNavbar = () => {
     return location.pathname === path;
   };
 
-
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
   };
@@ -63,28 +62,26 @@ const EmployeeNavbar = () => {
               Staff Minder
             </Text>
           </Box>
-          {/* Display links for larger screens */}
           {isLargerThanMd ? (
-           <Box display="flex" alignItems="center">
-           <Link
-             href="employee-leave-requests"
-             p="4"
-             color={isCurrentRoute("/leave-requests") ? "blue.300" : "white"}
-             fontWeight="bold"
-           >
-             Leave Requests
-           </Link>
-           <Link
-             href="/timesheet"
-             p="4"
-             color={isCurrentRoute("/timesheet") ? "blue.300" : "white"}
-             fontWeight="bold"
-           >
-             Timesheet
-           </Link>
-         </Box>
+            <Box display="flex" alignItems="center">
+              <Link
+                href="employee-leave-requests"
+                p="4"
+                color={isCurrentRoute("/leave-requests") ? "blue.300" : "white"}
+                fontWeight="bold"
+              >
+                Leave Requests
+              </Link>
+              <Link
+                href="/timesheet"
+                p="4"
+                color={isCurrentRoute("/timesheet") ? "blue.300" : "white"}
+                fontWeight="bold"
+              >
+                Timesheet
+              </Link>
+            </Box>
           ) : (
-            // Display hamburger icon for small screens
             <IconButton
               as={FaBars}
               fontSize="2xl"
@@ -93,17 +90,31 @@ const EmployeeNavbar = () => {
               aria-label="Toggle Navigation"
             />
           )}
-          <Drawer isOpen={isDrawerOpen} placement="right" onClose={toggleDrawer}>
+          <Drawer
+            isOpen={isDrawerOpen}
+            placement="right"
+            onClose={toggleDrawer}
+          >
             <DrawerOverlay>
               <DrawerContent bg="gray.100">
                 <DrawerCloseButton />
                 <DrawerHeader borderBottomWidth="1px">Menu</DrawerHeader>
                 <DrawerBody>
                   <VStack spacing={4} align="stretch">
-                    <Link href="/timesheet" p="4" color="black" fontWeight="bold">
+                    <Link
+                      href="/timesheet"
+                      p="4"
+                      color="black"
+                      fontWeight="bold"
+                    >
                       Timesheet
                     </Link>
-                    <Link href="/employee-leave-requests" p="4" color="black" fontWeight="bold">
+                    <Link
+                      href="/employee-leave-requests"
+                      p="4"
+                      color="black"
+                      fontWeight="bold"
+                    >
                       Leave Requests
                     </Link>
                   </VStack>

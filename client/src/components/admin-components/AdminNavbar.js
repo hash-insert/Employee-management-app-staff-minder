@@ -34,7 +34,6 @@ const AdminNavbar = () => {
     return location.pathname === path;
   };
 
-
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
   };
@@ -63,44 +62,42 @@ const AdminNavbar = () => {
               Staff Minder
             </Text>
           </Box>
-          {/* Display links for larger screens */}
           {isLargerThanMd ? (
-           <Box display="flex" alignItems="center">
-           <Link
-             href="/leave-requests"
-             p="4"
-             color={isCurrentRoute("/leave-requests") ? "blue.300" : "white"}
-             fontWeight="bold"
-           >
-             Leave Requests
-           </Link>
-           <Link
-             href="/timesheets"
-             p="4"
-             color={isCurrentRoute("/timesheets") ? "blue.300" : "white"}
-             fontWeight="bold"
-           >
-             Timesheets
-           </Link>
-           <Link
-             href="/employees"
-             p="4"
-             color={isCurrentRoute("/employees") ? "blue.300" : "white"}
-             fontWeight="bold"
-           >
-             Employees
-           </Link>
-           <Link
-             href="/teams"
-             p="4"
-             color={isCurrentRoute("/teams") ? "blue.300" : "white"}
-             fontWeight="bold"
-           >
-             Teams
-           </Link>
-         </Box>
+            <Box display="flex" alignItems="center">
+              <Link
+                href="/leave-requests"
+                p="4"
+                color={isCurrentRoute("/leave-requests") ? "blue.300" : "white"}
+                fontWeight="bold"
+              >
+                Leave Requests
+              </Link>
+              <Link
+                href="/timesheets"
+                p="4"
+                color={isCurrentRoute("/timesheets") ? "blue.300" : "white"}
+                fontWeight="bold"
+              >
+                Timesheets
+              </Link>
+              <Link
+                href="/employees"
+                p="4"
+                color={isCurrentRoute("/employees") ? "blue.300" : "white"}
+                fontWeight="bold"
+              >
+                Employees
+              </Link>
+              <Link
+                href="/teams"
+                p="4"
+                color={isCurrentRoute("/teams") ? "blue.300" : "white"}
+                fontWeight="bold"
+              >
+                Teams
+              </Link>
+            </Box>
           ) : (
-            // Display hamburger icon for small screens
             <IconButton
               as={FaBars}
               fontSize="2xl"
@@ -109,20 +106,39 @@ const AdminNavbar = () => {
               aria-label="Toggle Navigation"
             />
           )}
-          <Drawer isOpen={isDrawerOpen} placement="right" onClose={toggleDrawer}>
+          <Drawer
+            isOpen={isDrawerOpen}
+            placement="right"
+            onClose={toggleDrawer}
+          >
             <DrawerOverlay>
               <DrawerContent bg="gray.100">
                 <DrawerCloseButton />
                 <DrawerHeader borderBottomWidth="1px">Menu</DrawerHeader>
                 <DrawerBody>
                   <VStack spacing={4} align="stretch">
-                    <Link href="/leave-requests" p="4" color="black" fontWeight="bold">
+                    <Link
+                      href="/leave-requests"
+                      p="4"
+                      color="black"
+                      fontWeight="bold"
+                    >
                       Leave Requests
                     </Link>
-                    <Link href="/timesheets" p="4" color="black" fontWeight="bold">
+                    <Link
+                      href="/timesheets"
+                      p="4"
+                      color="black"
+                      fontWeight="bold"
+                    >
                       Timesheets
                     </Link>
-                    <Link href="/employees" p="4" color="black" fontWeight="bold">
+                    <Link
+                      href="/employees"
+                      p="4"
+                      color="black"
+                      fontWeight="bold"
+                    >
                       Employees
                     </Link>
                     <Link href="/teams" p="4" color="black" fontWeight="bold">

@@ -51,31 +51,22 @@ const ShortLeaveForm = ({ onClose }) => {
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
-      // Submit the form
       setIsSubmitting(true);
       try {
-        // Check if employee with given email exists in the database
         const employeesResponse = await axios.get(
           `https://staff-minder-backend.onrender.com/api/employees?email=${formData.email}`
         );
-
         console.log(employeesResponse);
-
         const employees = employeesResponse.data;
-
         console.log(employees);
-
         const employee = employees.find((emp) => emp.email === formData.email);
-
         console.log(employee);
         if (!employees || employees.length === 0) {
-          // Employee with the given email does not exist
           newErrors.email = "Employee with this email does not exist.";
           setErrors(newErrors);
           setIsSubmitting(false);
           return;
         }
-        // Create the leave request data
         const leaveRequestData = {
           employeeId: employee._id,
           employeeName: employee.name,
@@ -87,17 +78,11 @@ const ShortLeaveForm = ({ onClose }) => {
           leaveType: "short",
           reason: formData.reason,
         };
-
-        // Make a POST request to create the leave request
         const response = await axios.post(
           "https://staff-minder-backend.onrender.com/api/employee/shortleaverequest",
           leaveRequestData
         );
-
-        // Assuming the backend responds with the saved data, you can access it from the response object
         console.log("Leave request saved:", response.data);
-
-        // Reset the form and close the modal
         setFormData({
           fromTime: "",
           toTime: "",
@@ -109,7 +94,6 @@ const ShortLeaveForm = ({ onClose }) => {
         onClose();
         window.location.reload();
       } catch (error) {
-        // Handle any errors that occurred during the API request
         console.error("Error while saving leave request:", error);
         setIsSubmitting(false);
       }

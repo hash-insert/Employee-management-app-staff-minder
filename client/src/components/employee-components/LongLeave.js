@@ -10,7 +10,7 @@ import {
   Textarea,
   Heading,
   Divider,
-} from "@chakra-ui/react"; 
+} from "@chakra-ui/react";
 
 const LongLeaveForm = ({ onClose }) => {
   const [formData, setFormData] = useState({
@@ -28,8 +28,6 @@ const LongLeaveForm = ({ onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    // Validation
     const newErrors = {};
     if (!formData.startDate) {
       newErrors.startDate = "Please enter a start date.";
@@ -43,57 +41,43 @@ const LongLeaveForm = ({ onClose }) => {
     if (!formData.email) {
       newErrors.email = "Please enter an email.";
     }
-  
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
       setIsSubmitting(true);
-  
+
       try {
-        // Check if employee with given email exists in the database
         const employeesResponse = await axios.get(
           `https://staff-minder-backend.onrender.com/api/employees?email=${formData.email}`
         );
-
         console.log(employeesResponse);
-  
         const employees = employeesResponse.data;
-
         console.log(employees);
-
-        const employee = employees.find(
-          (emp) => emp.email === formData.email
-        );
-
-        console.log(employee)
+        const employee = employees.find((emp) => emp.email === formData.email);
+        console.log(employee);
         if (!employees || employees.length === 0) {
-          // Employee with the given email does not exist
           newErrors.email = "Employee with this email does not exist.";
           setErrors(newErrors);
           setIsSubmitting(false);
           return;
-        }  
-        // Create the leave request data
+        }
         const leaveRequestData = {
           employeeId: employee._id,
           employeeName: employee.name,
           email: formData.email,
-          status: "pending", // Assuming the status is set to "Pending" by default
+          status: "pending",
           fromDate: formData.startDate,
           toDate: formData.endDate,
-          leaveType: "long", // Assuming the default leave type is "long"
+          leaveType: "long",
           reason: formData.reason,
         };
-   
-        // Make a POST request to create the leave request
+
         const response = await axios.post(
           "https://staff-minder-backend.onrender.com/api/employee/leaverequest",
           leaveRequestData
         );
-        // Assuming the backend responds with the saved data, you can access it from the response object
         console.log("Leave request saved:", response.data);
-  
-        // Reset the form and close the modal
         setFormData({
           startDate: "",
           endDate: "",
@@ -105,13 +89,12 @@ const LongLeaveForm = ({ onClose }) => {
         onClose();
         window.location.reload();
       } catch (error) {
-        // Handle any errors that occurred during the API request
         console.error("Error while saving leave request:", error);
         setIsSubmitting(false);
       }
     }
   };
-  
+
   const handleCancel = () => {
     setFormData({
       startDate: "",
@@ -200,7 +183,7 @@ const LongLeaveForm = ({ onClose }) => {
             mt={4}
             isLoading={isSubmitting}
           >
-            Save 
+            Save
           </Button>
 
           <Button colorScheme="red" mt={4} ml={2} onClick={handleCancel}>

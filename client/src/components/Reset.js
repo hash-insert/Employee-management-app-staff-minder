@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { sendPasswordResetEmail } from "firebase/auth";
-
-import {auth,firestore} from "../firebase";
-
+import { auth } from "../firebase";
 import {
   Box,
   VStack,
@@ -20,8 +18,6 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import { AiFillEye, AiFillEyeInvisible, AiOutlineLock } from "react-icons/ai";
-//import { useUserContext } from "../UserContext";
-
 const customTheme = extendTheme({
   colors: {
     brandBlue: "#0A6EBD",
@@ -29,17 +25,14 @@ const customTheme = extendTheme({
   },
 });
 const Reset = () => {
-  const [email , setEmail] = useState("");
+  const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(false);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
- // const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  //const { userEmail } = useUserContext();
-  //console.log("userEmail:", userEmail);
 
   const handleEmailInputChange = (e) => {
     setEmail(e.target.value);
@@ -58,23 +51,23 @@ const Reset = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
   const handleToggleConfirmPassword = () => {
-    setShowConfirmPassword((prevShowConfirmPassword) => !prevShowConfirmPassword);
+    setShowConfirmPassword(
+      (prevShowConfirmPassword) => !prevShowConfirmPassword
+    );
   };
-  const handleSubmit =async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-     // Email validation using regex
-     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-     if (!emailRegex.test(email)) {
-       setEmailError(true);
-       return;
-     }
-    // Password validation using regex
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setEmailError(true);
+      return;
+    }
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
     if (!passwordRegex.test(password)) {
       setPasswordError(true);
       return;
     }
-    // Check if passwords match
     if (password !== confirmPassword) {
       setConfirmPasswordError(true);
       return;
@@ -82,32 +75,24 @@ const Reset = () => {
     setEmail("");
     setPassword("");
     setConfirmPassword("");
-    // Reset password logic
-    // ...
     try {
-      // Send a password reset email to the user's email address using Firebase
-      await sendPasswordResetEmail(auth,email);
-
-      // Make a POST request to the backend API to reset the password in MongoDB
-      const response = await axios.put("https://staff-minder-backend.onrender.com/api/employee/resetpassword", {
-        email,
-        newPassword: password,
-      });
-
-      // Password reset successful, handle the response (e.g., display success message)
+      await sendPasswordResetEmail(auth, email);
+      const response = await axios.put(
+        "https://staff-minder-backend.onrender.com/api/employee/resetpassword",
+        {
+          email,
+          newPassword: password,
+        }
+      );
       console.log("Password reset successful:", response.data);
     } catch (error) {
-      // Handle any errors that occurred during the password reset process
       console.error("Error resetting password:", error);
     }
-
     setEmail("");
     setPassword("");
     setConfirmPassword("");
   };
-  
 
-  
   return (
     <ChakraProvider theme={customTheme}>
       <Center bgGradient="linear(to-b, brandBlue, brandLightBlue)" h="100vh">
@@ -156,7 +141,8 @@ const Reset = () => {
                 />
                 {passwordError && (
                   <FormErrorMessage fontSize="sm" color="red">
-                    Password must contain at least 6 characters with uppercase, lowercase, digit, and special character
+                    Password must contain at least 6 characters with uppercase,
+                    lowercase, digit, and special character
                   </FormErrorMessage>
                 )}
                 <Button
@@ -203,7 +189,9 @@ const Reset = () => {
                   _hover={{ bg: "transparent" }}
                   _focus={{ boxShadow: "none" }}
                   onClick={handleToggleConfirmPassword}
-                  aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                  aria-label={
+                    showConfirmPassword ? "Hide password" : "Show password"
+                  }
                   zIndex={1}
                   mt={3}
                 >

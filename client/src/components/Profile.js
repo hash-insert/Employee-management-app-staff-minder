@@ -17,7 +17,7 @@ import {
 
 import { FaUserCircle } from "react-icons/fa";
 import { signOut } from "firebase/auth";
-import { auth } from "../firebase"; 
+import { auth } from "../firebase";
 import { toast } from "react-toastify";
 
 const customTheme = extendTheme({
@@ -78,38 +78,25 @@ const Profile = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Name validation
     if (fullname.length < 5) {
       setFullnameError(true);
       return;
     }
-
-    // Mobile number validation
     if (mobileNo.length !== 10 || !/^\d+$/.test(mobileNo)) {
       setMobileNoError(true);
       return;
     }
-
-    // Email validation using regex
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       setEmailError(true);
       return;
     }
-
-    // Password validation using regex
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
     if (!passwordRegex.test(password)) {
       setPasswordError(true);
       return;
     }
-
-    // Handle form submission
-    // ...
-
-    // Clear input values
     setEmail("");
     setFullname("");
     setMobileNo("");
@@ -119,7 +106,7 @@ const Profile = () => {
   };
 
   const handleLogout = () => {
-    signOut(auth) // Call the signOut function with your auth object
+    signOut(auth)
       .then(() => {
         toast.success("Logged out successfully");
         navigate("/");
@@ -127,7 +114,6 @@ const Profile = () => {
       })
       .catch((error) => {
         console.log("Logout error:", error);
-        // Handle any errors that occur during the logout process
       });
   };
 
@@ -155,7 +141,7 @@ const Profile = () => {
                       width: "200px",
                       height: "200px",
                       borderRadius: "50%",
-                      border: "none", 
+                      border: "none",
                     }}
                   />
                 ) : (
@@ -232,7 +218,6 @@ const Profile = () => {
                   bg="white"
                   mt={5}
                   pr={showPassword ? "2.5rem" : "1rem"}
-                  // Add right padding to accommodate the toggle button
                 />
                 {passwordError && (
                   <FormErrorMessage fontSize="sm" color="red">
@@ -241,12 +226,7 @@ const Profile = () => {
                 )}
               </FormControl>
               <Flex justify="space-between" w="100%" mt={8}>
-                <Button
-                  type="submit"
-                  bg="brandBlue"
-                  size="lg"
-                  color="white"
-                >
+                <Button type="submit" bg="brandBlue" size="lg" color="white">
                   Save
                 </Button>
                 <Button

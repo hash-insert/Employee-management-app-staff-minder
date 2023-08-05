@@ -14,7 +14,6 @@ function LeaveCalendar({ onDayClick, userEmail }) {
     axios
       .get(`https://staff-minder-backend.onrender.com/api/employees`)
       .then((response) => {
-        // Find the employee with the given email
         const employee = response.data.find(
           (employee) => employee.email === userEmail
         );
@@ -25,7 +24,6 @@ function LeaveCalendar({ onDayClick, userEmail }) {
               `https://staff-minder-backend.onrender.com/api/employee/${employee._id}/leaverequest`
             )
             .then((leaveRequestsResponse) => {
-              // Map the leave requests to calendar events format
               const leaveRequests = leaveRequestsResponse.data.map(
                 (leaveRequest) => ({
                   title: leaveRequest.reason,
@@ -42,7 +40,6 @@ function LeaveCalendar({ onDayClick, userEmail }) {
                   `https://staff-minder-backend.onrender.com/api/employee/${employee._id}/shortleaverequest`
                 )
                 .then((shortLeaveRequestsResponse) => {
-                  // Map the short leave requests to calendar events format
                   const shortLeaveRequests =
                     shortLeaveRequestsResponse.data.map(
                       (shortLeaveRequest) => ({
@@ -55,8 +52,6 @@ function LeaveCalendar({ onDayClick, userEmail }) {
                         },
                       })
                     );
-
-                  // Combine both leave requests and short leave requests into a single array
                   const allEvents = [...leaveRequests, ...shortLeaveRequests];
                   setCalendarEvents(allEvents);
                 })

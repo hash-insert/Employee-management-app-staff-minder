@@ -1,25 +1,6 @@
-
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import {
-  Box,
-  Heading,
-  Input,
-  Button,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  Flex,
-  Select,
-  extendTheme,
-  ChakraProvider,
-  Center,
-  Text,
-} from "@chakra-ui/react";
-//import React from "react";
+import { Input, Center } from "@chakra-ui/react";
 import Fullcalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -27,11 +8,9 @@ import interactionPlugin from "@fullcalendar/interaction";
 import * as bootstrap from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-
 function Calendar({ events, onDayClick }) {
   const [calenderevents, setCalenderEvents] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filterStatus, setFilterStatus] = useState("all");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const formatTimeTo12Hour = (time) => {
     const [hours, minutes] = time.split(":");
@@ -56,7 +35,6 @@ function Calendar({ events, onDayClick }) {
     setSearchTerm(event.target.value);
   };
 
-  // Filter events based on the search term
   const filteredEvents = calenderevents.filter((event) =>
     event.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -64,53 +42,39 @@ function Calendar({ events, onDayClick }) {
     a.extendedProps.empName.localeCompare(b.extendedProps.empName)
   );
 
-
   useEffect(() => {
     fetchAllTimesheets();
   }, []);
-    // Fetch events from MongoDB
-    // Example using axios:
-    // axios.get('/api/events').then(response => setEvents(response.data));
 
-    // For demonstration, let's use mock data
-    const fetchAllTimesheets = () => {
-      axios
-        .get("https://staff-minder-backend.onrender.com/api/employees/timesheets")
-        .then((response) => {
-          // Assuming the response data is an array of timesheets, you can set the state accordingly.
-          const allTimesheets = response.data;
-          console.log(allTimesheets)
-          // Transform the timesheet data to the format expected by the calendar
-          const calendarEvents = allTimesheets.map((timesheet) => ({
-            title: timesheet.employeeName,
-            start: timesheet.date ,
-            backgroundColor: "green",
-            extendedProps: {
-              date:timesheet.date,
-              empName:timesheet.employeeName,
-              startTime:formatTimeTo12Hour(timesheet.fromTime),
-              endTime:formatTimeTo12Hour(timesheet.toTime),
-              file:timesheet.documents,
-              note: timesheet.notes,
-              timespent:timesheet.timeDifference||"Na",
-            },
-           
-          }));
-          // Set the state with the transformed data
-          setCalenderEvents(calendarEvents);
-          
-        })
-        .catch((error) => {
-          console.error("Error fetching timesheets:", error);
-        });
-    };
-  
-
-
- 
+  const fetchAllTimesheets = () => {
+    axios
+      .get("https://staff-minder-backend.onrender.com/api/employees/timesheets")
+      .then((response) => {
+        const allTimesheets = response.data;
+        console.log(allTimesheets);
+        const calendarEvents = allTimesheets.map((timesheet) => ({
+          title: timesheet.employeeName,
+          start: timesheet.date,
+          backgroundColor: "green",
+          extendedProps: {
+            date: timesheet.date,
+            empName: timesheet.employeeName,
+            startTime: formatTimeTo12Hour(timesheet.fromTime),
+            endTime: formatTimeTo12Hour(timesheet.toTime),
+            file: timesheet.documents,
+            note: timesheet.notes,
+            timespent: timesheet.timeDifference || "Na",
+          },
+        }));
+        setCalenderEvents(calendarEvents);
+      })
+      .catch((error) => {
+        console.error("Error fetching timesheets:", error);
+      });
+  };
 
   const renderEventDetails = (event) => {
-      return `
+    return `
         
       <p>Date: ${event.extendedProps.date}</p>
       <p>Employee Name: ${event.extendedProps.empName}</p>
@@ -120,36 +84,33 @@ function Calendar({ events, onDayClick }) {
       <p>Note: ${event.extendedProps.note}</p>
       <p>Attachements:${event.extendedProps.file}</p>
       `;
-    
   };
 
   return (
     <div>
-      
       <Center>
-      
-      <Input
-        type="text"
-        value={searchTerm}
-        onChange={handleSearch}
-        placeholder="Search events"
-        mr={2}
-        mt={5}
-        mb={{ base: "2", sm: "0" }}
-        borderWidth="2px"
-        borderRadius="md"
-        borderColor="black"
-        width = "50%"      
+        <Input
+          type="text"
+          value={searchTerm}
+          onChange={handleSearch}
+          placeholder="Search events"
+          mr={2}
+          mt={5}
+          mb={{ base: "2", sm: "0" }}
+          borderWidth="2px"
+          borderRadius="md"
+          borderColor="black"
+          width="50%"
         />
       </Center>
-          
+
       <Fullcalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView={"dayGridMonth"}
         headerToolbar={{
-          start: "today prev,next", // will normally be on the left. if RTL, will be on the right
+          start: "today prev,next",
           center: "title",
-          end: "dayGridMonth,timeGridWeek,timeGridDay", // will normally be on the right. if RTL, will be on the left
+          end: "dayGridMonth,timeGridWeek,timeGridDay",
         }}
         height={"90vh"}
         events={sortedEvents}
@@ -181,7 +142,7 @@ function Calendar({ events, onDayClick }) {
               {info.event.title}
             </div>
           );
-            }}
+        }}
       />
     </div>
   );

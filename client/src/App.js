@@ -40,20 +40,20 @@ const App = () => {
       <Router>
         <ToastContainer />
         <Routes>
-        <Route path="/reset" element={<Reset />} />
+          <Route path="/reset" element={<Reset />} />
           {loggedIn ? (
             <>
               <Route path="/" element={<AdminLeaveRequests />} />
               <Route path="/leave-requests" element={<AdminLeaveRequests />} />
               <Route path="/admin-dashboard" element={<AdminDashboard />} />
               <Route path="/timesheets" element={<AdminTimesheets />} />
-              
+
               <Route
                 path="/employee-dashboard"
                 element={<EmployeeDashboard />}
               />
               <Route path="/employees" element={<Employees />} />
-              
+
               <Route path="/profile" element={<Profile />} />
               <Route path="/timesheet" element={<EmployeeTimesheet />} />
               <Route
@@ -62,8 +62,10 @@ const App = () => {
               />
             </>
           ) : (
-            <Route path="/" element={<Login onLogin={() => setLoggedIn(true)} />} />
-            
+            <Route
+              path="/"
+              element={<Login onLogin={() => setLoggedIn(true)} />}
+            />
           )}
         </Routes>
       </Router>

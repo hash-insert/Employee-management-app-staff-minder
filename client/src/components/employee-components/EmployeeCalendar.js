@@ -1,37 +1,15 @@
-
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import {
-  Box,
-  Heading,
-  Input,
-  Button,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  Flex,
-  Select,
-  extendTheme,
-  ChakraProvider,
-  Center,
-  Text,
-} from "@chakra-ui/react";
-//import React from "react";
 import Fullcalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import * as bootstrap from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-//import Timesheet from './EmployeeTimesheet';
 
-
-function Calendar({userEmail, onDayClick }) {
+function Calendar({ userEmail, onDayClick }) {
   const [calenderevents, setCalenderEvents] = useState([]);
- 
+
   const formatTimeTo12Hour = (time) => {
     const [hours, minutes] = time.split(":");
     const parsedHours = parseInt(hours, 10);
@@ -55,60 +33,50 @@ function Calendar({userEmail, onDayClick }) {
     axios
       .get(`https://staff-minder-backend.onrender.com/api/employees`)
       .then((response) => {
-        // Find the employee with the given email
         const employee = response.data.find(
           (employee) => employee.email === userEmail
         );
 
         if (employee) {
-          //console.log(employee._id)
           axios
             .get(
               `https://staff-minder-backend.onrender.com/api/employee/${employee._id}/timesheets`
             )
             .then((TimesheetRequestsResponse) => {
-              // Map the leave requests to calendar events format
               const TimesheetRequests = TimesheetRequestsResponse.data.map(
                 (TimesheetRequest) => ({
-                  title: TimesheetRequest.timeDifference, // You can set the title here
+                  title: TimesheetRequest.timeDifference,
                   start: TimesheetRequest.date,
-                  
-                  //startTime:TimesheetRequest.fromTime,
                   extendedProps: {
-                    date:TimesheetRequest.date,
-                    empName:TimesheetRequest.employeeName,
-                    startTime:formatTimeTo12Hour(TimesheetRequest.fromTime),
-                    endTime:formatTimeTo12Hour(TimesheetRequest.toTime),
-                    file:TimesheetRequest.documents,
+                    date: TimesheetRequest.date,
+                    empName: TimesheetRequest.employeeName,
+                    startTime: formatTimeTo12Hour(TimesheetRequest.fromTime),
+                    endTime: formatTimeTo12Hour(TimesheetRequest.toTime),
+                    file: TimesheetRequest.documents,
                     note: TimesheetRequest.notes,
                   },
                 })
               );
-                  // Combine both leave requests and short leave requests into a single array
-                  const allEvents = [...TimesheetRequests];
-                  console.log(allEvents)
-                  setCalenderEvents(allEvents);
-                })
-              
-                .catch((error) => {
-                  console.error(
-                    "Error fetching employee's  timesheet requests:",
-                    error
-                  );
-                });
-            }
-          })  
+              const allEvents = [...TimesheetRequests];
+              console.log(allEvents);
+              setCalenderEvents(allEvents);
+            })
+
+            .catch((error) => {
+              console.error(
+                "Error fetching employee's  timesheet requests:",
+                error
+              );
+            });
+        }
+      })
       .catch((error) => {
         console.error("Error fetching employees:", error);
       });
   }, [userEmail]);
 
-
-
-  
-
   const renderEventDetails = (event) => {
-      return `
+    return `
         
         <p>Date: ${event.extendedProps.date}</p>
         <p>Employee Name: ${event.extendedProps.empName}</p>
@@ -118,12 +86,10 @@ function Calendar({userEmail, onDayClick }) {
         <p>Attachements:${event.extendedProps.file}</p>
         
       `;
-    
   };
 
   return (
     <div>
-    
       <Fullcalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView={"dayGridMonth"}
@@ -134,7 +100,6 @@ function Calendar({userEmail, onDayClick }) {
         }}
         height={"90vh"}
         events={calenderevents}
-        
         eventDidMount={(info) => {
           return new bootstrap.Popover(info.el, {
             title: info.event.title,
@@ -153,8 +118,7 @@ function Calendar({userEmail, onDayClick }) {
             <div
               className="fc-event-title fc-sticky"
               style={{
-                backgroundColor:
-                  info.event.title === " ",
+                backgroundColor: info.event.title === " ",
                 color: "black",
                 padding: "2px 5px",
                 borderRadius: "5px",
@@ -163,7 +127,7 @@ function Calendar({userEmail, onDayClick }) {
               {info.event.title}
             </div>
           );
-            }}
+        }}
       />
     </div>
   );

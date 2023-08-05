@@ -111,7 +111,6 @@ const EmployeeLeaveRequests = () => {
           </Button>
         </Center>
 
-        {/* Display the ShortLeaveForm when showShortLeaveForm is true */}
         {showShortLeaveForm && (
           <ChakraProvider theme={customTheme}>
             <ShortLeaveForm
@@ -136,7 +135,6 @@ const EmployeeLeaveRequests = () => {
           </ChakraProvider>
         )}
 
-        {/* Display the LongLeaveForm when showLongLeaveForm is true */}
         {showLongLeaveForm && (
           <ChakraProvider theme={customTheme}>
             <LongLeaveForm

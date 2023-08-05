@@ -1,29 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import axios from "axios";
 import {
-    Box,
-    Button,
-    FormControl,
-    FormErrorMessage,
-    FormLabel,
-    Input,
-    Textarea,
-    Heading,
-    Divider,
-  } from "@chakra-ui/react";
-  
+  Box,
+  Button,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Input,
+  Textarea,
+  Heading,
+  Divider,
+} from "@chakra-ui/react";
 
-const EventForm = ({onClose,onSubmit}) => {
+const EventForm = ({ onClose, onSubmit }) => {
   const [formData, setFormData] = useState({
     date: "",
-    empName:"",
+    empName: "",
     startTime: "",
     endTime: "",
-    file:"",
+    file: "",
     note: "",
-    email:"",
-    timeDifference:"",
-    
+    email: "",
+    timeDifference: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
@@ -38,17 +36,15 @@ const EventForm = ({onClose,onSubmit}) => {
     const timeDiffInMs = endTime - startTime;
     const hours = Math.floor(timeDiffInMs / 1000 / 60 / 60);
     const minutes = Math.floor((timeDiffInMs / 1000 / 60) % 60);
-    const formattedHours = hours.toString().padStart(2, '0');
-  const formattedMinutes = minutes.toString().padStart(2, '0');
-  let haurs = "hrs";
+    const formattedHours = hours.toString().padStart(2, "0");
+    const formattedMinutes = minutes.toString().padStart(2, "0");
+    let haurs = "hrs";
 
-  return `${formattedHours}:${formattedMinutes} ${haurs}`;
+    return `${formattedHours}:${formattedMinutes} ${haurs}`;
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Validation
     const newErrors = {};
     if (!formData.date) {
       newErrors.date = "Please enter a date.";
@@ -71,7 +67,7 @@ const EventForm = ({onClose,onSubmit}) => {
     if (!formData.email) {
       newErrors.email = "Please enter an email.";
     }
-     const startTime = new Date(`1970-01-01T${formData.startTime}`);
+    const startTime = new Date(`1970-01-01T${formData.startTime}`);
     const endTime = new Date(`1970-01-01T${formData.endTime}`);
     if (startTime >= endTime) {
       newErrors.endTime = "End time should be greater than start time.";
@@ -80,37 +76,23 @@ const EventForm = ({onClose,onSubmit}) => {
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
-      // Submit the form
       const timeDifference = getTimeDifference();
       setIsSubmitting(true);
-      // Perform API call or other operations here
-      // Pass the form data to the parent component
-   //setFormData((prevFormData) => ({ ...prevFormData, timeDifference }));
-      //console.log({...formData,timeDifference})
-      //onClose();
       try {
-        // Check if employee with given email exists in the database
         const employeesResponse = await axios.get(
           `https://staff-minder-backend.onrender.com/api/employees?email=${formData.email}`
         );
-
         console.log(employeesResponse);
-
         const employees = employeesResponse.data;
-
         console.log(employees);
-
         const employee = employees.find((emp) => emp.email === formData.email);
-
         console.log(employee);
         if (!employees || employees.length === 0) {
-          // Employee with the given email does not exist
           newErrors.email = "Employee with this email does not exist.";
           setErrors(newErrors);
           setIsSubmitting(false);
           return;
         }
-        // Create the leave request data
         const leaveRequestData = {
           employeeId: employee._id,
           employeeName: employee.name,
@@ -120,93 +102,79 @@ const EventForm = ({onClose,onSubmit}) => {
           fromTime: formData.startTime,
           toTime: formData.endTime,
           documents: formData.file,
-          notes:formData.note,
-          //timeDifference
-        
+          notes: formData.note,
         };
-
-        // Make a POST request to create the leave request
         const response = await axios.post(
-          "https://staff-minder-backend.onrender.com/api/employee/timesheets",{...leaveRequestData,timeDifference}
-          
+          "https://staff-minder-backend.onrender.com/api/employee/timesheets",
+          { ...leaveRequestData, timeDifference }
         );
 
-        // Assuming the backend responds with the saved data, you can access it from the response object
         console.log("event request saved:", response.data);
-
-        // Reset the form and close the modal
         setFormData({
           date: "",
-          empName:"",
+          empName: "",
           startTime: "",
           endTime: "",
-          file:null,
+          file: null,
           note: "",
-          email:""
+          email: "",
         });
         setErrors({});
         setIsSubmitting(false);
-        
+
         onClose();
         window.location.reload();
       } catch (error) {
-        // Handle any errors that occurred during the API request
         console.error("Error while saving leave request:", error.response.data);
         setIsSubmitting(false);
       }
     }
-  
-
-    
-    
   };
 
   const handleCancel = () => {
     setFormData({
       date: "",
-      empName:"",
+      empName: "",
       startTime: "",
       endTime: "",
-      file:null,
+      file: null,
       note: "",
-      email:""
+      email: "",
     });
     setErrors({});
     onClose();
   };
 
-
   return (
     <Box
-    position="fixed"
-    top="0"
-    left="0"
-    width="100%"
-    height="100%"
-    backgroundColor="rgba(0, 0, 0, 0.5)"
-    display="flex"
-    justifyContent="center"
-    alignItems="center"
-    zIndex="9999"
-  >
-    <Box
-      maxW="sm"
-      mx="auto"
-      borderWidth="1px"
-      borderColor="white"
-      p={6}
-      bg="white"
-      borderRadius="md"
-      boxShadow="lg"
-      zIndex="10000"
+      position="fixed"
+      top="0"
+      left="0"
+      width="100%"
+      height="100%"
+      backgroundColor="rgba(0, 0, 0, 0.5)"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      zIndex="9999"
     >
-    
-    <Heading as="h2" size="lg" textAlign="center" mb={4}>
+      <Box
+        maxW="sm"
+        mx="auto"
+        borderWidth="1px"
+        borderColor="white"
+        p={6}
+        bg="white"
+        borderRadius="md"
+        boxShadow="lg"
+        zIndex="10000"
+      >
+        <Heading as="h2" size="lg" textAlign="center" mb={4}>
           ADD
         </Heading>
         <Divider borderColor="white" mb={4} />
         <form onSubmit={handleSubmit}>
-        <FormControl isInvalid={!!errors.email} mt={4}>
+          <FormControl isInvalid={!!errors.email} mt={4}>
             <FormLabel>Email</FormLabel>
             <Input
               type="email"
@@ -230,7 +198,7 @@ const EventForm = ({onClose,onSubmit}) => {
           <FormControl isInvalid={!!errors.empName} mt={4}>
             <FormLabel>Employee Name</FormLabel>
             <Input
-              type='text'
+              type="text"
               name="empName"
               value={formData.empName}
               onChange={handleInputChange}
@@ -263,7 +231,7 @@ const EventForm = ({onClose,onSubmit}) => {
           <FormControl isInvalid={!!errors.file} mt={4}>
             <FormLabel>Documents</FormLabel>
             <Input
-              type = 'file'
+              type="file"
               name="file"
               value={formData.file}
               onChange={handleInputChange}
@@ -297,6 +265,6 @@ const EventForm = ({onClose,onSubmit}) => {
       </Box>
     </Box>
   );
-}
+};
 
 export default EventForm;

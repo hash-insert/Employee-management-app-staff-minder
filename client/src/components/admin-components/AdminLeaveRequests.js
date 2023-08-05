@@ -1,4 +1,4 @@
-import React, { useState , useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import AdminNavbar from "./AdminNavbar";
 import axios from "axios";
 import {
@@ -30,15 +30,14 @@ const customTheme = extendTheme({
 const AdminLeaveRequests = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
-  const [pendingRequests, setPendingRequests] = useState([]);
-  const [reviewedRequests, setReviewedRequests] = useState([]);
   const [shortLeaveRequests, setShortLeaveRequests] = useState([]);
   const [leaveRequests, setLeaveRequests] = useState([]);
 
   useEffect(() => {
-    // Fetch pending leave requests
     axios
-      .get("https://staff-minder-backend.onrender.com/api/employees/leaverequest")
+      .get(
+        "https://staff-minder-backend.onrender.com/api/employees/leaverequest"
+      )
       .then((response) => {
         setLeaveRequests(response.data);
       })
@@ -46,8 +45,10 @@ const AdminLeaveRequests = () => {
         console.error("Error fetching leave requests:", error);
       });
 
-      axios
-      .get("https://staff-minder-backend.onrender.com/api/employees/shortleaverequest")
+    axios
+      .get(
+        "https://staff-minder-backend.onrender.com/api/employees/shortleaverequest"
+      )
       .then((response) => {
         setShortLeaveRequests(response.data);
       })
@@ -56,8 +57,6 @@ const AdminLeaveRequests = () => {
       });
   }, []);
 
-
-  // Filter leave requests based on search query and status
   const filteredshortLeaveRequests = shortLeaveRequests.filter((request) => {
     const normalizedQuery = searchQuery.toLowerCase();
     const normalizedEmployeeName = request.employeeName.toLowerCase();
@@ -76,14 +75,15 @@ const AdminLeaveRequests = () => {
     return matchSearchQuery && matchStatus;
   });
 
-  // Handle status change
   const handleStatusChange = (requestId, newStatus) => {
     axios
-      .put(`https://staff-minder-backend.onrender.com/api/employees/shortleaverequest/${requestId}/${newStatus}`, {
-        status: newStatus,
-      })
+      .put(
+        `https://staff-minder-backend.onrender.com/api/employees/shortleaverequest/${requestId}/${newStatus}`,
+        {
+          status: newStatus,
+        }
+      )
       .then((response) => {
-        // On successful update, update the local state to reflect the change
         const updatedshortLeaveRequests = shortLeaveRequests.map((request) => {
           if (request.id === requestId) {
             return { ...request, status: newStatus };
@@ -95,28 +95,28 @@ const AdminLeaveRequests = () => {
       .catch((error) => {
         console.error("Error updating leave request status:", error);
       });
-    }
-    const handleStatusChanges = (requestId, newStatus) => {
-        axios
-          .put(`https://staff-minder-backend.onrender.com/api/employees/leaverequest/${requestId}/${newStatus}`, {
-            status: newStatus,
-          })
-          .then((response) => {
-            // On successful update, update the local state to reflect the change
-            const updatedLeaveRequests = leaveRequests.map((request) => {
-              if (request.id === requestId) {
-                return { ...request, status: newStatus };
-              }
-              return request;
-            });
-            setLeaveRequests(updatedLeaveRequests);
-          })
-          .catch((error) => {
-            console.error("Error updating leave request status:", error);
-          });
+  };
+  const handleStatusChanges = (requestId, newStatus) => {
+    axios
+      .put(
+        `https://staff-minder-backend.onrender.com/api/employees/leaverequest/${requestId}/${newStatus}`,
+        {
+          status: newStatus,
         }
-      
-
+      )
+      .then((response) => {
+        const updatedLeaveRequests = leaveRequests.map((request) => {
+          if (request.id === requestId) {
+            return { ...request, status: newStatus };
+          }
+          return request;
+        });
+        setLeaveRequests(updatedLeaveRequests);
+      })
+      .catch((error) => {
+        console.error("Error updating leave request status:", error);
+      });
+  };
 
   return (
     <ChakraProvider theme={customTheme}>
@@ -126,7 +126,12 @@ const AdminLeaveRequests = () => {
           <Heading size="lg" mb={4} textAlign="center" color="white">
             Leave Requests
           </Heading>
-          <Flex direction={{ base: "column", md: "row" }} flexWrap="wrap" justifyContent="space-between" mb={4}>
+          <Flex
+            direction={{ base: "column", md: "row" }}
+            flexWrap="wrap"
+            justifyContent="space-between"
+            mb={4}
+          >
             <Box
               flex={{ base: "1", sm: "auto" }}
               mb={{ base: "4", sm: "0" }}
@@ -139,7 +144,7 @@ const AdminLeaveRequests = () => {
                 mr={2}
                 mb={{ base: "2", sm: "0" }}
                 _placeholder={{
-                  color: "white", // Custom color for the placeholder
+                  color: "white",
                 }}
               />
             </Box>
@@ -167,15 +172,15 @@ const AdminLeaveRequests = () => {
             </Center>
           ) : (
             <Box overflowX="auto">
-              <Heading size="lg" mb={4} textAlign="center" color="white" >
-              Short Leave Requests
+              <Heading size="lg" mb={4} textAlign="center" color="white">
+                Short Leave Requests
               </Heading>
               <Table variant="simple">
                 <Thead>
                   <Tr>
-                  <Th bg="brandBlue" color="white" py={2}>
-                    Request ID
-                  </Th>
+                    <Th bg="brandBlue" color="white" py={2}>
+                      Request ID
+                    </Th>
                     <Th bg="brandBlue" color="white" py={2}>
                       Employee Name
                     </Th>
@@ -193,7 +198,7 @@ const AdminLeaveRequests = () => {
                 <Tbody>
                   {filteredshortLeaveRequests.map((request) => (
                     <Tr key={request.id}>
-                       <Td>{request._id}</Td>
+                      <Td>{request._id}</Td>
                       <Td>{request.employeeName}</Td>
                       <Td>{request.leaveType}</Td>
                       <Td>
@@ -204,14 +209,13 @@ const AdminLeaveRequests = () => {
                               : request.status === "approve"
                               ? "green"
                               : "red"
-                              
                           }
                           size="sm"
                         >
                           {request.status}
                         </Button>
                       </Td>
-                      
+
                       <Td>
                         {request.status === "pending" && (
                           <>
@@ -243,47 +247,47 @@ const AdminLeaveRequests = () => {
               </Table>
             </Box>
           )}
-          
+
           {filteredleaveRequests.length > 0 && (
             <Box overflowX="auto">
-          <Heading size="lg" m={5} textAlign="center" color="white">
-            Leave Requests
-          </Heading>
-          
-            <Table variant="simple">
-              <Thead>
-                <Tr>
-                <Th bg="brandBlue" color="white" py={2}>
-                    Request ID
-                  </Th>
-                  <Th bg="brandBlue" color="white" py={2}>
-                    Employee Name
-                  </Th>
-                  <Th bg="brandBlue" color="white" py={2}>
-                    Leave Type
-                  </Th>
-                  <Th bg="brandBlue" color="white" py={2}>
-                    Status
-                  </Th>
-                  <Th bg="brandBlue" color="white" py={2}>
-                    From
-                  </Th>
-                  <Th bg="brandBlue" color="white" py={2}>
-                    To
-                  </Th>
-                  <Th bg="brandBlue" color="white" py={2}>
+              <Heading size="lg" m={5} textAlign="center" color="white">
+                Leave Requests
+              </Heading>
+
+              <Table variant="simple">
+                <Thead>
+                  <Tr>
+                    <Th bg="brandBlue" color="white" py={2}>
+                      Request ID
+                    </Th>
+                    <Th bg="brandBlue" color="white" py={2}>
+                      Employee Name
+                    </Th>
+                    <Th bg="brandBlue" color="white" py={2}>
+                      Leave Type
+                    </Th>
+                    <Th bg="brandBlue" color="white" py={2}>
+                      Status
+                    </Th>
+                    <Th bg="brandBlue" color="white" py={2}>
+                      From
+                    </Th>
+                    <Th bg="brandBlue" color="white" py={2}>
+                      To
+                    </Th>
+                    <Th bg="brandBlue" color="white" py={2}>
                       Action
-                  </Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {filteredleaveRequests.map((request) => (
-                  <Tr key={request.id}>
-                    <Td>{request._id}</Td>
-                    <Td>{request.employeeName}</Td>
-                    <Td>{request.leaveType}</Td>
-                    <Td>
-                    <Button
+                    </Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {filteredleaveRequests.map((request) => (
+                    <Tr key={request.id}>
+                      <Td>{request._id}</Td>
+                      <Td>{request.employeeName}</Td>
+                      <Td>{request.leaveType}</Td>
+                      <Td>
+                        <Button
                           colorScheme={
                             request.status === "pending"
                               ? "yellow"
@@ -320,14 +324,14 @@ const AdminLeaveRequests = () => {
                             >
                               Reject
                             </Button>
-                            </>
+                          </>
                         )}
-                            </Td>
-                  </Tr>
-                ))}
-              </Tbody>
-            </Table>
-          </Box>
+                      </Td>
+                    </Tr>
+                  ))}
+                </Tbody>
+              </Table>
+            </Box>
           )}
         </Box>
       </Center>

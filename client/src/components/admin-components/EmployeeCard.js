@@ -1,16 +1,17 @@
-import React from 'react';
-import {
-  Box,
-  Image,
-  Text,
-  IconButton,
-  Stack,
-} from '@chakra-ui/react';
-import { FiEdit } from 'react-icons/fi';
+import React from "react";
+import { Box, Image, Text, IconButton, Stack } from "@chakra-ui/react";
+import { FiEdit } from "react-icons/fi";
 
 const EmployeeCard = ({ employee }) => {
-  const { name, role, team, dateOfJoining, dateOfBirth, email, profilePicture } =
-    employee;
+  const {
+    name,
+    role,
+    team,
+    dateOfJoining,
+    dateOfBirth,
+    email,
+    profilePicture,
+  } = employee;
 
   return (
     <Box

@@ -73,7 +73,6 @@ const AddEmployee = ({ isOpen, onClose }) => {
   };
 
   const handleAddEmployee = async () => {
-    // Perform form validation
     if (
       !name ||
       !email ||
@@ -85,8 +84,6 @@ const AddEmployee = ({ isOpen, onClose }) => {
       toast.error("Please fill in all the fields.");
       return;
     }
-
-    // Reset form fields
     setDateOfJoining("");
     setSelectedTeam("");
     setName("");
@@ -105,8 +102,6 @@ const AddEmployee = ({ isOpen, onClose }) => {
       await updateProfile(user, {
         displayName: name,
       });
-
-      // Save the employee data to Firestore
       const employeeRef = doc(firestore, "employees", user.uid);
       await setDoc(employeeRef, {
         name,
@@ -118,8 +113,6 @@ const AddEmployee = ({ isOpen, onClose }) => {
         dateOfJoining,
         password,
       });
-
-      // Make a POST request to the backend
       const employeeData = {
         name,
         email,
@@ -130,9 +123,10 @@ const AddEmployee = ({ isOpen, onClose }) => {
         dateOfJoining,
         password,
       };
-
-      // Use Axios to post data to the backend
-      await axios.post("https://staff-minder-backend.onrender.com/api/employees", employeeData);
+      await axios.post(
+        "https://staff-minder-backend.onrender.com/api/employees",
+        employeeData
+      );
 
       console.log("Employee data saved to Firestore and backend.");
       toast.success("Employee added successfully.");
