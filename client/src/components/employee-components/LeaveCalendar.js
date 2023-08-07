@@ -5,7 +5,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import * as bootstrap from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import axios from "axios"; // Import Axios
+import axios from "axios";
 
 function LeaveCalendar({ onDayClick, userEmail }) {
   const [calendarEvents, setCalendarEvents] = useState([]);
@@ -31,6 +31,7 @@ function LeaveCalendar({ onDayClick, userEmail }) {
                   end: leaveRequest.toDate,
                   extendedProps: {
                     reason: leaveRequest.reason,
+                    status: leaveRequest.status,
                   },
                 })
               );
@@ -49,6 +50,7 @@ function LeaveCalendar({ onDayClick, userEmail }) {
                         extendedProps: {
                           reason: shortLeaveRequest.reason,
                           timeRange: `${shortLeaveRequest.fromTime} to ${shortLeaveRequest.toTime}`,
+                          status: shortLeaveRequest.status,
                         },
                       })
                     );
@@ -74,13 +76,14 @@ function LeaveCalendar({ onDayClick, userEmail }) {
 
   const renderEventDetails = (event) => {
     if (event.title === "Short Leave") {
-      console.log("props:" + event.extendedProps.reason);
       return `
         <p>From: ${event.extendedProps.timeRange}</p>
         <p>${event.extendedProps.reason}</p>
+        <p>${event.extendedProps.status}
       `;
     } else {
-      return `<p>${event.extendedProps.reason}</p>`;
+      return `<p>${event.extendedProps.reason}</p>
+      <p>${event.extendedProps.status}</p>`;
     }
   };
 

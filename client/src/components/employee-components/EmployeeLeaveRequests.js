@@ -12,7 +12,7 @@ import LongLeaveForm from "./LongLeave";
 import EmployeeNavbar from "./EmployeeNavbar";
 import { useUserContext } from "../../UserContext";
 
-const customTheme = extendTheme({
+const customTheme = extendTheme({ 
   colors: {
     brandBlue: "#0A6EBD",
     brandLightBlue: "#45cfdd",
@@ -116,16 +116,17 @@ const EmployeeLeaveRequests = () => {
             <ShortLeaveForm
               onClose={() => setShowShortLeaveForm(false)}
               onSubmit={(formData) => {
-                // Add a new short leave event to the calendar
+                const { date, fromTime, toTime, reason, status } = formData;
                 const newEvent = {
                   title: "Short Leave",
-                  start: formData.date,
-                  end: formData.date,
+                  start: date,
+                  end: date,
                   color: "green",
                   extendedProps: {
-                    reason: formData.reason,
-                    fromTime: formData.fromTime,
-                    toTime: formData.toTime,
+                    reason: reason,
+                    fromTime: fromTime,
+                    toTime: toTime,
+                    status: status,
                   },
                 };
                 updateCalendarEvents(newEvent);
@@ -142,7 +143,7 @@ const EmployeeLeaveRequests = () => {
               endDate={selectedDates.endDate}
               onClose={() => setShowLongLeaveForm(false)}
               onSubmit={(formData) => {
-                const { startDate, endDate, reason } = formData;
+                const { startDate, endDate, reason, status } = formData;
                 const newEvent = {
                   title: "Long Leave",
                   start: startDate,
@@ -152,6 +153,7 @@ const EmployeeLeaveRequests = () => {
                     reason: reason,
                     fromDate: startDate,
                     toDate: endDate,
+                    status: status,
                   },
                 };
                 updateCalendarEvents(newEvent);

@@ -11,16 +11,18 @@ import {
   Heading,
   Divider,
 } from "@chakra-ui/react";
+import { useUserContext } from "../../UserContext";
 
 const LongLeaveForm = ({ onClose }) => {
   const [formData, setFormData] = useState({
     startDate: "",
     endDate: "",
     reason: "",
-    email: "",
+    status: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
+  const { userEmail } = useUserContext();
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -38,24 +40,18 @@ const LongLeaveForm = ({ onClose }) => {
     if (!formData.reason) {
       newErrors.reason = "Please enter a reason.";
     }
-    if (!formData.email) {
-      newErrors.email = "Please enter an email.";
-    }
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
       setIsSubmitting(true);
-
+ 
       try {
         const employeesResponse = await axios.get(
-          `https://staff-minder-backend.onrender.com/api/employees?email=${formData.email}`
+          `https://staff-minder-backend.onrender.com/api/employees?email=${userEmail}`
         );
-        console.log(employeesResponse);
         const employees = employeesResponse.data;
-        console.log(employees);
-        const employee = employees.find((emp) => emp.email === formData.email);
-        console.log(employee);
+        const employee = employees.find((emp) => emp.email === userEmail);
         if (!employees || employees.length === 0) {
           newErrors.email = "Employee with this email does not exist.";
           setErrors(newErrors);
@@ -65,7 +61,7 @@ const LongLeaveForm = ({ onClose }) => {
         const leaveRequestData = {
           employeeId: employee._id,
           employeeName: employee.name,
-          email: formData.email,
+          email: userEmail,
           status: "pending",
           fromDate: formData.startDate,
           toDate: formData.endDate,
@@ -77,12 +73,10 @@ const LongLeaveForm = ({ onClose }) => {
           "https://staff-minder-backend.onrender.com/api/employee/leaverequest",
           leaveRequestData
         );
-        console.log("Leave request saved:", response.data);
         setFormData({
           startDate: "",
           endDate: "",
           reason: "",
-          email: "",
         });
         setErrors({});
         setIsSubmitting(false);
@@ -134,17 +128,6 @@ const LongLeaveForm = ({ onClose }) => {
         </Heading>
         <Divider borderColor="white" mb={4} />
         <form onSubmit={handleSubmit}>
-          <FormControl isInvalid={!!errors.email} mt={4}>
-            <FormLabel>Email</FormLabel>
-            <Input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-            />
-            <FormErrorMessage>{errors.email}</FormErrorMessage>
-          </FormControl>
-
           <FormControl isInvalid={!!errors.startDate} mt={4}>
             <FormLabel>Start Date</FormLabel>
             <Input

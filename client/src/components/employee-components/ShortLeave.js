@@ -5,12 +5,13 @@ import {
   Button,
   FormControl,
   FormErrorMessage,
-  FormLabel,
+  FormLabel, 
   Input,
   Textarea,
   Heading,
   Divider,
 } from "@chakra-ui/react";
+import { useUserContext } from "../../UserContext";
 
 const ShortLeaveForm = ({ onClose }) => {
   const [formData, setFormData] = useState({
@@ -18,19 +19,17 @@ const ShortLeaveForm = ({ onClose }) => {
     fromTime: "",
     toTime: "",
     reason: "",
-    email: "",
+    status: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
-
+  const { userEmail } = useUserContext();
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Validation
     const newErrors = {};
     if (!formData.date) {
       newErrors.date = "Please enter a date.";
@@ -44,9 +43,6 @@ const ShortLeaveForm = ({ onClose }) => {
     if (!formData.reason) {
       newErrors.reason = "Please enter a reason.";
     }
-    if (!formData.email) {
-      newErrors.email = "Please enter an email.";
-    }
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -54,13 +50,10 @@ const ShortLeaveForm = ({ onClose }) => {
       setIsSubmitting(true);
       try {
         const employeesResponse = await axios.get(
-          `https://staff-minder-backend.onrender.com/api/employees?email=${formData.email}`
+          `https://staff-minder-backend.onrender.com/api/employees?email=${userEmail}`
         );
-        console.log(employeesResponse);
         const employees = employeesResponse.data;
-        console.log(employees);
-        const employee = employees.find((emp) => emp.email === formData.email);
-        console.log(employee);
+        const employee = employees.find((emp) => emp.email === userEmail);
         if (!employees || employees.length === 0) {
           newErrors.email = "Employee with this email does not exist.";
           setErrors(newErrors);
@@ -70,7 +63,7 @@ const ShortLeaveForm = ({ onClose }) => {
         const leaveRequestData = {
           employeeId: employee._id,
           employeeName: employee.name,
-          email: formData.email,
+          email: userEmail,
           status: "pending",
           date: formData.date,
           fromTime: formData.fromTime,
@@ -82,12 +75,10 @@ const ShortLeaveForm = ({ onClose }) => {
           "https://staff-minder-backend.onrender.com/api/employee/shortleaverequest",
           leaveRequestData
         );
-        console.log("Leave request saved:", response.data);
         setFormData({
           fromTime: "",
           toTime: "",
           reason: "",
-          email: "",
         });
         setErrors({});
         setIsSubmitting(false);
@@ -140,16 +131,6 @@ const ShortLeaveForm = ({ onClose }) => {
         </Heading>
         <Divider borderColor="white" mb={4} />
         <form onSubmit={handleSubmit}>
-          <FormControl isInvalid={!!errors.email} mt={4}>
-            <FormLabel>Email</FormLabel>
-            <Input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-            />
-            <FormErrorMessage>{errors.email}</FormErrorMessage>
-          </FormControl>
           <FormControl isInvalid={!!errors.date}>
             <FormLabel>Date</FormLabel>
             <Input
