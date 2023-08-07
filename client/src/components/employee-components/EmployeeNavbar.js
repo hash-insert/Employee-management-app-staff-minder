@@ -5,7 +5,6 @@ import {
   Text,
   IconButton,
   extendTheme,
-  Link,
   Drawer,
   DrawerOverlay,
   DrawerContent,
@@ -17,7 +16,7 @@ import {
   useMediaQuery,
 } from "@chakra-ui/react";
 import { FaUserCircle, FaBars } from "react-icons/fa";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const customTheme = extendTheme({
   colors: {
@@ -29,6 +28,7 @@ const EmployeeNavbar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isLargerThanMd] = useMediaQuery("(min-width: 768px)");
   const location = useLocation();
+  const navigate = useNavigate(); // Added useNavigate hook
 
   const isCurrentRoute = (path) => {
     return location.pathname === path;
@@ -36,6 +36,11 @@ const EmployeeNavbar = () => {
 
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
+  };
+
+  const navigateTo = (path) => {
+    navigate(path);
+    setIsDrawerOpen(false); // Close the drawer after navigation
   };
 
   return (
@@ -50,36 +55,41 @@ const EmployeeNavbar = () => {
       >
         <Flex align="center" justify="space-between" padding="1rem">
           <Box display="flex" alignItems="center">
-            <Link href="/profile">
-              <IconButton
-                as={FaUserCircle}
-                fontSize="2xl"
-                marginRight="1rem"
-                variant="unstyled"
-              />
-            </Link>
+            <IconButton
+              as={FaUserCircle}
+              fontSize="2xl"
+              marginRight="1rem"
+              variant="unstyled"
+              onClick={() => navigateTo("/profile")}
+            />
             <Text fontSize="xl" fontWeight="bold">
               Staff Minder
             </Text>
           </Box>
           {isLargerThanMd ? (
             <Box display="flex" alignItems="center">
-              <Link
-                href="employee-leave-requests"
+              <Text
                 p="4"
-                color={isCurrentRoute("/leave-requests") ? "blue.300" : "white"}
+                color={
+                  isCurrentRoute("/employee-leave-requests")
+                    ? "blue.300"
+                    : "white"
+                }
                 fontWeight="bold"
+                onClick={() => navigateTo("/employee-leave-requests")}
+                cursor="pointer"
               >
                 Leave Requests
-              </Link>
-              <Link
-                href="/timesheet"
+              </Text>
+              <Text
                 p="4"
                 color={isCurrentRoute("/timesheet") ? "blue.300" : "white"}
                 fontWeight="bold"
+                onClick={() => navigateTo("/timesheet")}
+                cursor="pointer"
               >
                 Timesheet
-              </Link>
+              </Text>
             </Box>
           ) : (
             <IconButton
@@ -101,22 +111,24 @@ const EmployeeNavbar = () => {
                 <DrawerHeader borderBottomWidth="1px">Menu</DrawerHeader>
                 <DrawerBody>
                   <VStack spacing={4} align="stretch">
-                    <Link
-                      href="/timesheet"
+                    <Text
                       p="4"
                       color="black"
                       fontWeight="bold"
+                      onClick={() => navigateTo("/timesheet")}
+                      cursor="pointer"
                     >
                       Timesheet
-                    </Link>
-                    <Link
-                      href="/employee-leave-requests"
+                    </Text>
+                    <Text
                       p="4"
                       color="black"
                       fontWeight="bold"
+                      onClick={() => navigateTo("/employee-leave-requests")}
+                      cursor="pointer"
                     >
                       Leave Requests
-                    </Link>
+                    </Text>
                   </VStack>
                 </DrawerBody>
               </DrawerContent>

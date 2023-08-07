@@ -5,7 +5,6 @@ import {
   Text,
   IconButton,
   extendTheme,
-  Link,
   Drawer,
   DrawerOverlay,
   DrawerContent,
@@ -17,7 +16,7 @@ import {
   useMediaQuery,
 } from "@chakra-ui/react";
 import { FaUserCircle, FaBars } from "react-icons/fa";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const customTheme = extendTheme({
   colors: {
@@ -29,6 +28,7 @@ const AdminNavbar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isLargerThanMd] = useMediaQuery("(min-width: 768px)");
   const location = useLocation();
+  const navigate = useNavigate(); // Added useNavigate hook
 
   const isCurrentRoute = (path) => {
     return location.pathname === path;
@@ -36,6 +36,11 @@ const AdminNavbar = () => {
 
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
+  };
+
+  const navigateTo = (path) => {
+    navigate(path);
+    setIsDrawerOpen(false); // Close the drawer after navigation
   };
 
   return (
@@ -50,52 +55,57 @@ const AdminNavbar = () => {
       >
         <Flex align="center" justify="space-between" padding="1rem">
           <Box display="flex" alignItems="center">
-            <Link href="/profile">
-              <IconButton
-                as={FaUserCircle}
-                fontSize="2xl"
-                marginRight="1rem"
-                variant="unstyled"
-              />
-            </Link>
+            <IconButton
+              as={FaUserCircle}
+              fontSize="2xl"
+              marginRight="1rem"
+              variant="unstyled"
+              onClick={() => navigateTo("/profile")}
+            />
             <Text fontSize="xl" fontWeight="bold">
               Staff Minder
             </Text>
           </Box>
           {isLargerThanMd ? (
             <Box display="flex" alignItems="center">
-              <Link
-                href="/leave-requests"
+              <Text
                 p="4"
-                color={isCurrentRoute("/leave-requests") ? "blue.300" : "white"}
+                color={
+                  isCurrentRoute("/leave-requests") ? "blue.300" : "white"
+                }
                 fontWeight="bold"
+                onClick={() => navigateTo("/leave-requests")}
+                cursor="pointer"
               >
                 Leave Requests
-              </Link>
-              <Link
-                href="/timesheets"
+              </Text>
+              <Text
                 p="4"
                 color={isCurrentRoute("/timesheets") ? "blue.300" : "white"}
                 fontWeight="bold"
+                onClick={() => navigateTo("/timesheets")}
+                cursor="pointer"
               >
                 Timesheets
-              </Link>
-              <Link
-                href="/employees"
+              </Text>
+              <Text
                 p="4"
                 color={isCurrentRoute("/employees") ? "blue.300" : "white"}
                 fontWeight="bold"
+                onClick={() => navigateTo("/employees")}
+                cursor="pointer"
               >
                 Employees
-              </Link>
-              <Link
-                href="/teams"
+              </Text>
+              <Text
                 p="4"
                 color={isCurrentRoute("/teams") ? "blue.300" : "white"}
                 fontWeight="bold"
+                onClick={() => navigateTo("/teams")}
+                cursor="pointer"
               >
                 Teams
-              </Link>
+              </Text>
             </Box>
           ) : (
             <IconButton
@@ -117,33 +127,42 @@ const AdminNavbar = () => {
                 <DrawerHeader borderBottomWidth="1px">Menu</DrawerHeader>
                 <DrawerBody>
                   <VStack spacing={4} align="stretch">
-                    <Link
-                      href="/leave-requests"
+                    <Text
                       p="4"
                       color="black"
                       fontWeight="bold"
+                      onClick={() => navigateTo("/leave-requests")}
+                      cursor="pointer"
                     >
                       Leave Requests
-                    </Link>
-                    <Link
-                      href="/timesheets"
+                    </Text>
+                    <Text
                       p="4"
                       color="black"
                       fontWeight="bold"
+                      onClick={() => navigateTo("/timesheets")}
+                      cursor="pointer"
                     >
                       Timesheets
-                    </Link>
-                    <Link
-                      href="/employees"
+                    </Text>
+                    <Text
                       p="4"
                       color="black"
                       fontWeight="bold"
+                      onClick={() => navigateTo("/employees")}
+                      cursor="pointer"
                     >
                       Employees
-                    </Link>
-                    <Link href="/teams" p="4" color="black" fontWeight="bold">
+                    </Text>
+                    <Text
+                      p="4"
+                      color="black"
+                      fontWeight="bold"
+                      onClick={() => navigateTo("/teams")}
+                      cursor="pointer"
+                    >
                       Teams
-                    </Link>
+                    </Text>
                   </VStack>
                 </DrawerBody>
               </DrawerContent>

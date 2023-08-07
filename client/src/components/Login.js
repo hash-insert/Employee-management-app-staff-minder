@@ -12,7 +12,6 @@ import {
   FormErrorMessage,
   extendTheme,
   ChakraProvider,
-  Link,
 } from "@chakra-ui/react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
@@ -191,7 +190,12 @@ const Login = ({ onLogin }) => {
                 Login
               </Button>
               <Text color="white" mt={2} align="center">
-                <Link href="/reset">Forget Password?</Link>
+                <span
+                  onClick={() => navigate("/reset")}
+                  style={{ cursor: "pointer" }}
+                >
+                  Forget Password?
+                </span>{" "}
               </Text>
             </form>
           </VStack>

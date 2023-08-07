@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../firebase";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   VStack,
@@ -13,7 +14,6 @@ import {
   FormErrorMessage,
   extendTheme,
   ChakraProvider,
-  Link,
   Text,
   Icon,
 } from "@chakra-ui/react";
@@ -33,6 +33,7 @@ const Reset = () => {
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const navigate = useNavigate();
 
   const handleEmailInputChange = (e) => {
     setEmail(e.target.value);
@@ -85,6 +86,7 @@ const Reset = () => {
         }
       );
       console.log("Password reset successful:", response.data);
+      navigate("/");
     } catch (error) {
       console.error("Error resetting password:", error);
     }
@@ -215,7 +217,12 @@ const Reset = () => {
                 Reset
               </Button>
               <Text color="white" mt={2} align="center">
-                <Link href="/">Login?</Link>
+                <span
+                  onClick={() => navigate("/")}
+                  style={{ cursor: "pointer" }}
+                >
+                  Login?
+                </span>
               </Text>
             </form>
           </VStack>
