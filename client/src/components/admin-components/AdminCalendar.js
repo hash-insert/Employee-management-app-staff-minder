@@ -54,10 +54,10 @@ function Calendar({ events, onDayClick }) {
         console.log(allTimesheets);
         const calendarEvents = allTimesheets.map((timesheet) => ({
           title: timesheet.employeeName,
-          start: timesheet.date,
-          backgroundColor: "green",
+          start: timesheet.date.slice(0, 10),
+          //backgroundColor: "green",
           extendedProps: {
-            date: timesheet.date,
+            date: timesheet.date.slice(0,10),
             empName: timesheet.employeeName,
             startTime: formatTimeTo12Hour(timesheet.fromTime),
             endTime: formatTimeTo12Hour(timesheet.toTime),
@@ -93,7 +93,7 @@ function Calendar({ events, onDayClick }) {
           type="text"
           value={searchTerm}
           onChange={handleSearch}
-          placeholder="Search events"
+          placeholder="Search Employee"
           mr={2}
           mt={5}
           mb={{ base: "2", sm: "0" }}
@@ -132,8 +132,8 @@ function Calendar({ events, onDayClick }) {
             <div
               className="fc-event-title fc-sticky"
               style={{
-                backgroundColor:
-                  info.event.title === "Short Leave" ? "#ffcc00" : "",
+                //backgroundColor:
+                  //info.event.title === "",
                 color: "black",
                 padding: "2px 5px",
                 borderRadius: "5px",

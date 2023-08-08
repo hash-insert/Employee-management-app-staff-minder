@@ -46,9 +46,9 @@ function Calendar({ userEmail, onDayClick }) {
               const TimesheetRequests = TimesheetRequestsResponse.data.map(
                 (TimesheetRequest) => ({
                   title: TimesheetRequest.timeDifference,
-                  start: TimesheetRequest.date,
+                  start: TimesheetRequest.date.slice(0, 10),
                   extendedProps: {
-                    date: TimesheetRequest.date,
+                    date: TimesheetRequest.date.slice(0, 10),
                     empName: TimesheetRequest.employeeName,
                     startTime: formatTimeTo12Hour(TimesheetRequest.fromTime),
                     endTime: formatTimeTo12Hour(TimesheetRequest.toTime),
@@ -118,7 +118,7 @@ function Calendar({ userEmail, onDayClick }) {
             <div
               className="fc-event-title fc-sticky"
               style={{
-                backgroundColor: info.event.title === " ",
+                //backgroundColor: info.event.title === " ",
                 color: "black",
                 padding: "2px 5px",
                 borderRadius: "5px",

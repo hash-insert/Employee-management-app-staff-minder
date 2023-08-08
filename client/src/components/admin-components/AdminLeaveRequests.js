@@ -91,6 +91,7 @@ const AdminLeaveRequests = () => {
           return request;
         });
         setShortLeaveRequests(updatedshortLeaveRequests);
+        window.location.reload();
       })
       .catch((error) => {
         console.error("Error updating leave request status:", error);
@@ -112,6 +113,7 @@ const AdminLeaveRequests = () => {
           return request;
         });
         setLeaveRequests(updatedLeaveRequests);
+        window.location.reload();
       })
       .catch((error) => {
         console.error("Error updating leave request status:", error);
@@ -121,7 +123,9 @@ const AdminLeaveRequests = () => {
   return (
     <ChakraProvider theme={customTheme}>
       <AdminNavbar />
-      <Center bgGradient="linear(to-b, brandBlue, brandLightBlue)" h="130vh">
+      <Center bgGradient="linear(to-b, brandBlue, brandLightBlue)" minH="100vh"
+        py="12"
+        flexDir="column">
         <Box w="100%" maxW="1200px" p={10} mt={4}>
           <Heading size="lg" mb={4} textAlign="center" color="white">
             Leave Requests
@@ -300,8 +304,8 @@ const AdminLeaveRequests = () => {
                           {request.status}
                         </Button>
                       </Td>
-                      <Td>{request.fromDate}</Td>
-                      <Td>{request.toDate}</Td>
+                      <Td>{request.fromDate.slice(0,10)}</Td>
+                      <Td>{request.toDate.slice(0,10)}</Td>
                       <Td>
                         {request.status === "pending" && (
                           <>

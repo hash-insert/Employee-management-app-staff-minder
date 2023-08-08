@@ -40,6 +40,7 @@ const Employees = () => {
         );
         const data = await response.json();
         setEmployees(data);
+        window.location.reload();
       } catch (error) {
         console.log("Error fetching employees:", error);
       }
