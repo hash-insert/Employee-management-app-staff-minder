@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import TeamCard from "./TeamCard";
 import AdminNavbar from "./AdminNavbar";
 import backendpic from '../../assets/backend.png';
@@ -13,14 +13,12 @@ import {
   SimpleGrid,
   Center
 } from "@chakra-ui/react";
-
 const customTheme = extendTheme({
   colors: {
     brandBlue: "#0A6EBD",
-    brandLightBlue: "#45cfdd",
+    brandLightBlue: "#45CFDD",
   },
 });
-
 const TeamList = () => {
   const teams = [
     { id: 1, title: "Frontend", imagePath: frontendpic },
@@ -29,7 +27,10 @@ const TeamList = () => {
     { id: 4, title: "Testing", imagePath: testingpic },
     { id: 5, title: "HR", imagePath: hrpic },
   ];
-
+  const [selectedTeam, setSelectedTeam] = useState("");
+  const handleSelectTeam = (teamTitle) => {
+    setSelectedTeam(teamTitle);
+  };
   return (
     <ChakraProvider theme={customTheme}>
       <AdminNavbar />
@@ -47,7 +48,12 @@ const TeamList = () => {
             w="full"
           >
             {teams.map((team) => (
-              <TeamCard key={team.id} title={team.title} image={team.imagePath} />
+              <TeamCard
+                key={team.id}
+                title={team.title}
+                image={team.imagePath}
+                onSelectTeam={handleSelectTeam}
+              />
             ))}
           </SimpleGrid>
         </Flex>
@@ -55,5 +61,4 @@ const TeamList = () => {
     </ChakraProvider>
   );
 };
-
 export default TeamList;
