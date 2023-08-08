@@ -11,8 +11,10 @@ import EmployeeTimesheet from "./components/employee-components/EmployeeTimeshee
 import Employees from "./components/admin-components/Employees";
 import Profile from "./components/Profile";
 import Reset from "./components/Reset";
+import Teams from "./components/admin-components/Teams";
 import { auth } from "./firebase";
 import { UserProvider } from "./UserContext";
+import TeamList from "./components/admin-components/Teams";
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -47,6 +49,7 @@ const App = () => {
               <Route path="/leave-requests" element={<AdminLeaveRequests />} />
               <Route path="/admin-dashboard" element={<AdminDashboard />} />
               <Route path="/timesheets" element={<AdminTimesheets />} />
+              <Route path="/teams" element={<TeamList />} />
 
               <Route
                 path="/employee-dashboard"
