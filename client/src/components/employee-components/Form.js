@@ -11,20 +11,20 @@ import {
   Heading,
   Divider,
 } from "@chakra-ui/react";
+import { useUserContext } from "../../UserContext";
 
 const EventForm = ({ onClose, onSubmit }) => {
   const [formData, setFormData] = useState({
     date: "",
-    empName: "",
     startTime: "",
     endTime: "",
     file: "",
     note: "",
-    email: "",
     timeDifference: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
+  const { userEmail } = useUserContext();
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -49,9 +49,6 @@ const EventForm = ({ onClose, onSubmit }) => {
     if (!formData.date) {
       newErrors.date = "Please enter a date.";
     }
-    if (!formData.empName) {
-      newErrors.empName = "Please enter a from empname.";
-    }
     if (!formData.startTime) {
       newErrors.startTime = "Please enter a from time.";
     }
@@ -64,9 +61,7 @@ const EventForm = ({ onClose, onSubmit }) => {
     if (!formData.note) {
       newErrors.note = "Please enter a note.";
     }
-    if (!formData.email) {
-      newErrors.email = "Please enter an email.";
-    }
+    
     const startTime = new Date(`1970-01-01T${formData.startTime}`);
     const endTime = new Date(`1970-01-01T${formData.endTime}`);
     if (startTime >= endTime) {
@@ -80,12 +75,12 @@ const EventForm = ({ onClose, onSubmit }) => {
       setIsSubmitting(true);
       try {
         const employeesResponse = await axios.get(
-          `https://staff-minder-backend.onrender.com/api/employees?email=${formData.email}`
+          `https://staff-minder-backend.onrender.com/api/employees?email=${userEmail}`
         );
         console.log(employeesResponse);
         const employees = employeesResponse.data;
         console.log(employees);
-        const employee = employees.find((emp) => emp.email === formData.email);
+        const employee = employees.find((emp) => emp.email === userEmail);
         console.log(employee);
         if (!employees || employees.length === 0) {
           newErrors.email = "Employee with this email does not exist.";
@@ -96,7 +91,7 @@ const EventForm = ({ onClose, onSubmit }) => {
         const leaveRequestData = {
           employeeId: employee._id,
           employeeName: employee.name,
-          email: formData.email,
+          email: userEmail,
           status: "pending",
           date: formData.date,
           fromTime: formData.startTime,
@@ -112,12 +107,11 @@ const EventForm = ({ onClose, onSubmit }) => {
         console.log("event request saved:", response.data);
         setFormData({
           date: "",
-          empName: "",
           startTime: "",
           endTime: "",
           file: null,
           note: "",
-          email: "",
+          
         });
         setErrors({});
         setIsSubmitting(false);
@@ -134,12 +128,11 @@ const EventForm = ({ onClose, onSubmit }) => {
   const handleCancel = () => {
     setFormData({
       date: "",
-      empName: "",
       startTime: "",
       endTime: "",
       file: null,
       note: "",
-      email: "",
+      
     });
     setErrors({});
     onClose();
@@ -174,16 +167,6 @@ const EventForm = ({ onClose, onSubmit }) => {
         </Heading>
         <Divider borderColor="white" mb={4} />
         <form onSubmit={handleSubmit}>
-          <FormControl isInvalid={!!errors.email} mt={4}>
-            <FormLabel>Email</FormLabel>
-            <Input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-            />
-            <FormErrorMessage>{errors.email}</FormErrorMessage>
-          </FormControl>
           <FormControl isInvalid={!!errors.date}>
             <FormLabel>Date</FormLabel>
             <Input
@@ -194,18 +177,6 @@ const EventForm = ({ onClose, onSubmit }) => {
             />
             <FormErrorMessage>{errors.date}</FormErrorMessage>
           </FormControl>
-
-          <FormControl isInvalid={!!errors.empName} mt={4}>
-            <FormLabel>Employee Name</FormLabel>
-            <Input
-              type="text"
-              name="empName"
-              value={formData.empName}
-              onChange={handleInputChange}
-            />
-            <FormErrorMessage>{errors.empName}</FormErrorMessage>
-          </FormControl>
-
           <FormControl isInvalid={!!errors.startTime} mt={4}>
             <FormLabel>From Time</FormLabel>
             <Input
