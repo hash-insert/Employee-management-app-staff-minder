@@ -24,7 +24,7 @@ const AdminDashboard = () => {
   return (
     <ChakraProvider theme={customTheme}>
       <AdminNavbar />
-      <Center bgGradient="linear(to-b, brandBlue, brandLightBlue)" h="100vh">
+      <Center bgGradient="linear(to-b, brandBlue, brandLightBlue)" minH="100vh">
         <VStack spacing={6} align="center">
           <Box
             p={4}

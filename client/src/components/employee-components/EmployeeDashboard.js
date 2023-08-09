@@ -23,7 +23,7 @@ const EmployeeDashboard = () => {
   return (
     <ChakraProvider theme={customTheme}>
       <EmployeeNavbar />
-      <Center bgGradient="linear(to-b, brandBlue, brandLightBlue)" h="100vh">
+      <Center bgGradient="linear(to-b, brandBlue, brandLightBlue)" minH="100vh">
         <VStack spacing={6} align="center">
           <Box
             p={4}
