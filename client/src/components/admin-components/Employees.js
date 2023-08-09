@@ -40,7 +40,6 @@ const Employees = () => {
         );
         const data = await response.json();
         setEmployees(data);
-        window.location.reload();
       } catch (error) {
         console.log("Error fetching employees:", error);
       }
@@ -101,21 +100,6 @@ const Employees = () => {
         </Box>
 
         <Flex direction="column" align="center" mb="6" w="full" px="6">
-          <Select
-            placeholder="Select a team"
-            value={selectedTeam}
-            onChange={handleTeamChange}
-            size="sm"
-            w="full"
-            maxW="300px"
-            mb="2"
-          >
-            <option value="devops">Devops Team</option>
-            <option value="frontend">Frontend Team</option>
-            <option value="backend">Backend Team</option>
-            <option value="testing">Testing Team</option>
-            <option value="testing">HR Team</option>
-          </Select>
           <Button
             leftIcon={<FiPlus />}
             colorScheme="blue"

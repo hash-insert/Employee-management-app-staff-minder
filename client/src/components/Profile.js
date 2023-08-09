@@ -184,7 +184,7 @@ const Profile = () => {
   };
   return (
     <ChakraProvider theme={customTheme}>
-      <Center bgGradient="linear(to-b, brandBlue, brandLightBlue)" h="100vh">
+      <Center bgGradient="linear(to-b, brandBlue, brandLightBlue)" minH="100vh">
         <Box
           w={["full", "md"]}
           p={[8, 10]}
@@ -320,7 +320,7 @@ const Profile = () => {
                   <Box fontSize="xl" fontWeight="bold" mb={3}>
                     {profileDetails.fullName}
                     </Box>
-                    <Box fontSize="s" fontWeight="bold">EMPLOYEE ID  {profileDetails.employeeId}</Box>
+                    <Box fontSize="s" fontWeight="bold">EMPLOYEE ID : {profileDetails.employeeId}</Box>
                  
                   <Box textAlign="match-parent" w="100%">
                   
